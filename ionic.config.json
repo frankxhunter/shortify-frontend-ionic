@@ -1,0 +1,7 @@
+{
+  "name": "Shortfy",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
