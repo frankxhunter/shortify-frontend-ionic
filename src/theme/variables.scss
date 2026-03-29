@@ -1,2 +1,178 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+
+@media (prefers-color-scheme: dark) {
+  :root, body, ion-app, ion-content, ion-card, ion-item, ion-toolbar, ion-searchbar, ion-tab-bar {
+    color-scheme: light only;
+    --ion-background-color: var(--background-main) !important;
+    --ion-text-color: var(--text-primary) !important;
+    --ion-card-background: var(--background-card) !important;
+    --ion-toolbar-background: var(--toolbar-background) !important;
+    --ion-toolbar-color: var(--text-primary) !important;
+    --ion-searchbar-background: var(--background-input) !important;
+    --ion-searchbar-color: var(--input-text) !important;
+    --ion-item-background: var(--background-card) !important;
+    --ion-item-color: var(--text-primary) !important;
+    --ion-border-color: var(--border-color) !important;
+    --ion-tab-bar-background: var(--background-card) !important;
+    --ion-tab-bar-color: var(--text-primary) !important;
+    --ion-color-step-50: var(--background-main) !important;
+    --ion-color-step-100: var(--background-input) !important;
+    --ion-color-step-200: var(--border-light) !important;
+    --ion-color-step-300: var(--border-color) !important;
+    --ion-color-step-400: var(--text-muted) !important;
+    --ion-color-step-500: var(--text-muted) !important;
+    --ion-color-step-600: var(--text-secondary) !important;
+    --ion-color-step-700: var(--text-secondary) !important;
+    --ion-color-step-800: var(--text-primary) !important;
+    --ion-color-step-900: var(--text-primary) !important;
+    --ion-color-step-950: var(--text-primary) !important;
+  }
+}
+:root {
+   /* =========================
+     IONIC OVERRIDES
+  ========================= */
+  color-scheme: light only;
+  --ion-background-color: #f6f4fb;
+  --ion-background-color-rgb: 246, 244, 251;
+  --ion-text-color: #1f2937;
+  --ion-text-color-rgb: 31, 41, 55;
+  --ion-card-background: #ffffff;
+  --ion-toolbar-background: #ffffff;
+  --ion-toolbar-color: #1f2937;
+  --ion-searchbar-background: #f3f4f6;
+  --ion-searchbar-color: #374151;
+  --ion-item-background: #ffffff;
+  --ion-item-color: #1f2937;
+  --ion-border-color: #e5e7eb;
+  --ion-tab-bar-background: #ffffff;
+  --ion-tab-bar-color: #1f2937;
+
+  /* =========================
+     PRIMARY COLORS
+  ========================= */
+  --color-primary: #5b4cf0;
+  --ion-color-primary: var(--color-primary);
+  --ion-color-color-primary: var(--color-primary);
+  --ion-color-mi-color: #ff5733;
+  --color-primary-hover: #4a3be0;
+  --color-primary-light: #eae8ff;
+  --color-text-gray: rgb(88, 88, 88);
+  --color-text-gray-light: rgb(128, 127, 127);
+  --color-secondary: #8b7cf6;
+
+  /* =========================
+     ICONO
+  ========================= */
+  --icon-size-container: 35px;
+  --icon-size: 20px;
+
+  /* =========================
+     BACKGROUNDS
+  ========================= */
+  --background-main: #f6f4fb;
+  --background-card: #ffffff;
+  --background-input: #f3f4f6;
+  --background-avatar: #e1e6ff;
+
+  /* =========================
+     TEXT COLORS
+  ========================= */
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --text-muted: #9ca3af;
+  --text-white: #ffffff;
+
+  /* =========================
+     BORDERS
+  ========================= */
+  --border-color: #e5e7eb;
+  --border-light: #f0f1f3;
+
+  /* =========================
+     ICON COLORS
+  ========================= */
+  --icon-primary: #5b4cf0;
+  --icon-secondary: #6b7280;
+  --icon-muted: #9ca3af;
+
+  /* =========================
+     BUTTONS
+  ========================= */
+  --button-primary-bg: var(--color-primary);
+  --button-primary-text: #ffffff;
+  --button-primary-hover: var(--color-primary-hover);
+
+  /* =========================
+     INPUTS
+  ========================= */
+  --input-bg: var(--background-input);
+  --input-border: #e5e7eb;
+  --input-placeholder: #9ca3af;
+  --input-text: #374151;
+
+  /* =========================
+     CARD
+  ========================= */
+  --card-background: #ffffff;
+  --card-border: #e5e7eb;
+
+  /* =========================
+     SHADOWS
+  ========================= */
+  --shadow-small: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-medium: 0 4px 10px rgba(0, 0, 0, 0.08);
+  --shadow-large: 0 10px 25px rgba(0, 0, 0, 0.12);
+
+  /* =========================
+     BORDER RADIUS
+  ========================= */
+  --radius-small: 6px;
+  --radius-medium: 10px;
+  --radius-large: 14px;
+  --radius-xl: 18px;
+
+  /* =========================
+     SPACING
+  ========================= */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 20px;
+  --space-xl: 32px;
+
+  /* =========================
+     TRANSITIONS
+  ========================= */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.35s ease;
+
+  /* =========================
+     TOOLBAR
+  ========================= */
+  --toolbar-background: #ffffff;
+  --toolbar-border: #e5e7eb;
+
+  /* =========================
+     GAP
+  ========================= */
+  --standard-gap: 10px;
+
+
+  --font-size-xs: clamp(0.7rem, 2vw, 0.875rem);     // 11-14px
+  --font-size-sm: clamp(0.8rem, 2.5vw, 1rem);        // 13-16px  
+  --font-size-md: clamp(0.875rem, 3vw, 1.125rem);    // 14-18px
+  --font-size-lg: clamp(1rem, 3.5vw, 1.25rem);       // 16-20px
+
+  --spacing-xs: clamp(4px, 1vw, 6px);
+  --spacing-sm: clamp(6px, 1.5vw, 10px);
+  --spacing-md: clamp(10px, 2.5vw, 16px);
+  --spacing-lg: clamp(16px, 4vw, 24px);
+  --spacing-xl: clamp(20px, 5vw, 32px);
+
+  --icon-size-responsive: clamp(18px, 4vw, 23px);
+  --button-height: clamp(40px, 8vw, 48px);
+  --button-max-width: clamp(160px, 40vw, 190px);
+
+}
+$base-font-size: 16px;

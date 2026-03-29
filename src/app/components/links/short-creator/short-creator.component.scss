@@ -1,0 +1,74 @@
+.card_container {
+  margin: 0;
+  border-radius: var(--radius-medium);
+  padding: clamp(16px, 5vw, 32px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1.5vw, 10px);
+}
+
+.header {
+  padding: 0;
+}
+
+.card_title {
+  display: flex;
+  align-items: center;
+  gap: var(--standard-gap);
+  padding: 0;
+  font-size: clamp(1rem, 3.5vw, 1.25rem);
+}
+
+.card_subtitle {
+  padding: 0;
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  color: var(--text-secondary);
+}
+
+.card_content {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1.5vw, 10px);
+}
+
+.custom-item {
+  --background: var(--background-input);
+  --border-radius: var(--radius-large);
+  margin-bottom: clamp(4px, 1vw, 8px);
+}
+
+.custom-input {
+  padding: clamp(10px, 2.5vw, 14px);
+}
+
+::ng-deep .custom-input {
+  input {
+    font-size: clamp(0.8rem, 2.5vw, 1rem) !important;
+  }
+  
+  .native-input {
+    font-size: clamp(0.8rem, 2.5vw, 1rem) !important;
+  }
+}
+
+.error-text {
+  color: #d32f2f;
+  font-size: clamp(0.7rem, 2vw, 0.875rem);
+  margin: clamp(4px, 1vw, 6px) clamp(6px, 1.5vw, 10px) clamp(10px, 2.5vw, 16px) clamp(6px, 1.5vw, 10px);
+}
+
+.shorter-button {
+  max-width: clamp(160px, 40vw, 190px);
+  height: clamp(40px, 8vw, 48px);
+  display: flex;
+  align-items: center;
+  color: var(--text-white);
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+}
+
+.icon-button {
+  margin-right: clamp(6px, 1.5vw, 10px);
+  height: clamp(18px, 4vw, 23px);
+  width: clamp(18px, 4vw, 23px);
+}

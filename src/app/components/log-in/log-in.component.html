@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="icon-container">
+    <app-shortfy-icon class="iconShortify"></app-shortfy-icon>
+    <div class="icon-title">Shortfy</div>
+    <div class="icon-subTitle">{{messages.iconMessage}}</div>
+  </div>
+  <ion-card class="login-container">
+    <ion-card-content class="login-content">
+      <h2>{{messages.titleMessage}}</h2>
+
+      <div class="form">
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <ion-item lines="none" class="custom-input">
+            <ion-input placeholder="Enter your username"></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <ion-item lines="none" class="custom-input">
+            <ion-input type="password" placeholder="Enter your password"></ion-input>
+          </ion-item>
+        </div>
+        <div class="error-container">
+          <div class="error-text">
+            Please enter a valid URL (including http:// or https://)
+          </div>
+        </div>
+        <ion-button class="login-button" fill="clear">{{messages.buttonMessage}}</ion-button>
+        <ion-button class="google-button" fill="clear">
+          <app-google-icon class="google-icon" [size]="25"></app-google-icon>
+          Login with google</ion-button>
+      </div>
+
+      <ion-button (click)="redirectToHome()" class="button-close" fill="clear"><ion-icon class="icon-close"
+          name="close-outline"></ion-icon></ion-button>
+
+      <div class="changeTypeOfLinkMessage" (click)="changeLoginType()">{{messages.changeButton}}</div>
+    </ion-card-content>
+  </ion-card>
+  <div class="bottom-text">Shorten your links and track them in one place</div>
+</div>

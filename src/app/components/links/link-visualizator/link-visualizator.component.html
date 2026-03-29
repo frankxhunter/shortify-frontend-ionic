@@ -1,0 +1,13 @@
+@if (contentIsEmpty()) {
+<ion-card class="card_container">
+  <ion-card-content class="card_content">
+    <div class="empty-body-container">
+      <ion-icon class="icon-link" name="open-outline"></ion-icon>
+      <ion-card-title class="card_title">No links yet</ion-card-title>
+      <ion-card-subtitle class="card_subtitle">Create your first shortened link using the form above</ion-card-subtitle>
+    </div>
+  </ion-card-content>
+</ion-card>
+}@else{
+  <app-link-component></app-link-component>
+}

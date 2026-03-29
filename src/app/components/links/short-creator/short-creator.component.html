@@ -1,0 +1,30 @@
+<ion-card class="card_container">
+  <ion-card-header class="header">
+    <ion-card-title class="card_title"> <app-shortfy-icon [isInvertColor]="true"></app-shortfy-icon> Shorten a
+      link</ion-card-title>
+    <ion-card-subtitle class="card_subtitle">Paste your long URL below and get a short link
+      instantly</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content class="card_content">
+    <div>
+      <ion-item lines="none" class="custom-item">
+        <ion-input type="url" placeholder="https://example.com" [(ngModel)]="url" (ionBlur)="validateUrl()"
+          class="custom-input">
+        </ion-input>
+      </ion-item>
+      @if (urlError) {
+      <p class="error-text">
+        Please enter a valid URL (including http:// or https://)
+      </p>
+      }
+    </div>
+
+    <ion-item lines="none" class="custom-item">
+      <ion-input type="text" placeholder="Optional: Name your link (e.g., 'Blog post', 'Product page')"
+        [(ngModel)]="linkName" class="custom-input">
+      </ion-input>
+    </ion-item>
+    <ion-button class="shorter-button"><ion-icon class="icon-button" name="link"></ion-icon>Shorten Link</ion-button>
+  </ion-card-content>
+</ion-card>

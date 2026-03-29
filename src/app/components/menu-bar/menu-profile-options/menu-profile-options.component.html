@@ -1,0 +1,37 @@
+<div class="profile-container">
+
+  @if (isLogin) {
+  <ion-button id="profile-trigger" fill="clear" class="profile-button">
+    <ion-avatar class="avatar">
+      <ion-icon name="person-outline"></ion-icon>
+    </ion-avatar>
+    <span class="user-name">User2425</span>
+    <ion-icon class="down_icon" name="chevron-down-outline"></ion-icon>
+  </ion-button>
+  }@else{
+    <ion-button class="sign-button" (click)="redirectToLogin()" ><ion-icon name="log-in-outline" class="sign-icon"></ion-icon>Sign in</ion-button>
+  }
+
+  <ion-popover trigger="profile-trigger" dismiss-on-select="true">
+    <ng-template>
+
+      <div class="popover-content">
+
+        <div class="profile-info">
+          <span class="label">Signed in as</span>
+          <strong>User2425@gmail.com</strong>
+        </div>
+
+        <ion-list lines="none">
+          <ion-item button>
+            <ion-icon name="log-out-outline" slot="start"></ion-icon>
+            Log out
+          </ion-item>
+        </ion-list>
+
+      </div>
+
+    </ng-template>
+  </ion-popover>
+
+</div>

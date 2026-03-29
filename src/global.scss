@@ -35,3 +35,24 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+
+* {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+}
+
+ion-button {
+  --border-radius: 12px;
+  text-transform: none;
+  color: var(--text-white)
+}
+
+ion-card-title {
+  color: var(--text-primary);
+}
+
+:root {
+  color-scheme: light only;
+}
+

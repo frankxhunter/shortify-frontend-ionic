@@ -1,0 +1,83 @@
+ion-avatar {
+  width: 40px;
+  height: 40px;
+  background-color: var(--background-avatar);
+  /* color de fondo del avatar genérico */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ion-avatar ion-icon {
+  font-size: 24px;
+  /* tamaño del icono dentro del círculo */
+  color: var(--color-primary);
+  /* color del icono */
+}
+
+span,
+.down_icon {
+  color: black;
+}
+
+
+.container {
+  display: inline-block;
+  width: auto;
+  border-radius: 10px;
+}
+
+.menu_button_container {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  margin: 0 10px;
+}
+
+.profile-button {
+  display: flex;
+  align-items: center;
+  color: black;
+}
+
+.popover-content {
+  padding: 10px;
+  min-width: 180px;
+}
+
+.profile-info {
+  padding: 10px;
+  border-bottom: 1px solid #d3d1d1;
+}
+
+.profile-info .label {
+  font-size: 12px;
+  color: gray;
+  display: block;
+}
+
+.user-name {
+  @media (max-width: 480px) {
+    display: none;
+  }
+}
+
+.sign-button {
+  height: clamp(40px, 8vw, 48px);
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  color: var(--text-white);
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+}
+
+.sign-icon {
+  margin-right: 4px;
+}
+
+.sign-button::part(native) {
+  background: var(--color-primary);
+  color: #ffffff;
+}

@@ -1,0 +1,27 @@
+.icon_container {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-primary);
+
+  border-radius: 8px;
+  width: var(--icon-size-container);
+  height: var(--icon-size-container);
+
+}
+
+.invert_icon_container {
+  background-color: var(--color-primary-light);
+}
+
+.icon {
+  color: var(--color-primary-light);
+  width: var(--icon-size);
+  height: var(--icon-size);
+  box-sizing: border-box;
+  font-size: 2px;
+}
+
+.invert_icon {
+  color: var(--color-primary);
+}
