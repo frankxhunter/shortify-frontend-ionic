@@ -8,6 +8,9 @@ const config: CapacitorConfig = {
     StatusBar: {
       overlaysWebView: false,
     }
+  },
+  server:{
+    androidScheme: 'http'
   }
 };
 

@@ -1,0 +1,8 @@
+<div class="copy-wrapper">
+  <ion-button class="button" fill="clear" (click)="copy()" [class.copied]="isCopied">
+    <ion-icon [name]="isCopied ? 'checkmark-outline' : 'copy-outline'"></ion-icon>
+  </ion-button>
+  <div class="tooltip" [class.visible]="isCopied">
+    Copied!
+  </div>
+</div>

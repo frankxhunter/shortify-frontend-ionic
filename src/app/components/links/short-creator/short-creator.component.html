@@ -25,6 +25,12 @@
         [(ngModel)]="linkName" class="custom-input">
       </ion-input>
     </ion-item>
-    <ion-button class="shorter-button"><ion-icon class="icon-button" name="link"></ion-icon>Shorten Link</ion-button>
+    <ion-button class="shorter-button" (click)="createUrl()" >
+      @if (loading) {
+        <ion-spinner name="crescent"></ion-spinner>
+      }@else {
+        <ion-icon class="icon-button" name="link"></ion-icon>Shorten Link
+      }
+    </ion-button>
   </ion-card-content>
 </ion-card>
