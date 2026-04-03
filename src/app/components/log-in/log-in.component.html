@@ -8,26 +8,32 @@
     <ion-card-content class="login-content">
       <h2>{{messages.titleMessage}}</h2>
 
-      <div class="form">
+      <div class="form" [formGroup]="form" (ngSubmit)="submit()">
         <div class="form-group">
-          <label class="form-label">Username</label>
-          <ion-item lines="none" class="custom-input">
-            <ion-input placeholder="Enter your username"></ion-input>
+          <label class="form-label">Email</label>
+          <ion-item lines="none" class="custom-input" [ngClass]="{'error-border': isInvalidControl('email') }">
+            <ion-input formControlName="email" placeholder="Enter your Email"></ion-input>
           </ion-item>
         </div>
 
         <div class="form-group">
           <label class="form-label">Password</label>
-          <ion-item lines="none" class="custom-input">
-            <ion-input type="password" placeholder="Enter your password"></ion-input>
+          <ion-item lines="none" class="custom-input" [ngClass]="{'error-border': isInvalidControl('password') }">
+            <ion-input formControlName="password" [type]="showPassword ? 'text' : 'password'" type="password"
+              placeholder="Enter your password"></ion-input>
+            <ion-icon slot="end" [name]="!showPassword ? 'eye-off-outline' : 'eye-outline'"
+              (click)="showPassword = !showPassword" class="eye-icon">
+            </ion-icon>
           </ion-item>
         </div>
+        @if (errorText) {
         <div class="error-container">
           <div class="error-text">
-            Please enter a valid URL (including http:// or https://)
+            <ion-icon class="error-icon" name="alert-circle-outline"></ion-icon> {{errorText}}
           </div>
         </div>
-        <ion-button class="login-button" fill="clear">{{messages.buttonMessage}}</ion-button>
+        }
+        <ion-button (click)="submit()" class="login-button" fill="clear">{{messages.buttonMessage}}</ion-button>
         <ion-button class="google-button" fill="clear">
           <app-google-icon class="google-icon" [size]="25"></app-google-icon>
           Login with google</ion-button>
