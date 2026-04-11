@@ -7,14 +7,17 @@
     gap: 10px;
 }
 
-.empty-body-container{
+.empty-body-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 10px;
+    font-size: clamp(0.75rem, 2vw, 0.875rem);
+
 }
-.icon-link{
+
+.icon-link {
     width: 35px;
     height: 35px;
     background-color: rgb(236, 236, 236);
@@ -24,5 +27,7 @@
 
 ion-card-title,
 ion-card-subtitle {
-  display: inline-block;
+    display: inline-block;
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+
 }

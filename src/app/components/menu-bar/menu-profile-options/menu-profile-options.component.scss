@@ -59,9 +59,22 @@ span,
 }
 
 .user-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+
+  /* ajusta según necesites */
   @media (max-width: 480px) {
     display: none;
   }
+}
+.profile-info strong {
+  word-break: break-all;  /* <-- quita esto si lo tienes */
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 160px;
 }
 
 .sign-button {
@@ -80,4 +93,19 @@ span,
 .sign-button::part(native) {
   background: var(--color-primary);
   color: #ffffff;
+}
+
+.item-list {
+  --padding-start: 10px;
+  --inner-padding-end: 10px;
+  --min-height: 36px;
+}
+
+.icon-logout {
+  margin-right: 8px;
+}
+
+.icon-logout{
+  width: 25px;
+  height: 25px;
 }

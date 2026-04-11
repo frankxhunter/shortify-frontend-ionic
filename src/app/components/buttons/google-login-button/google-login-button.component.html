@@ -1,0 +1,8 @@
+<ion-button class="google-button" fill="clear" (click)="login()">
+  @if(loading){
+  <ion-spinner class="loading" name="crescent"></ion-spinner>
+  }@else{
+    <app-google-icon class="google-icon" [size]="25"></app-google-icon>
+    Login with google
+  }
+</ion-button>

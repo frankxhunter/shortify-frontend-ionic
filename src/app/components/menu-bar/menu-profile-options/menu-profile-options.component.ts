@@ -1,6 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonAvatar, IonIcon, IonButton, IonList, IonItem, IonPopover } from "@ionic/angular/standalone";
+import { AuthService } from 'src/app/services/auth-service/auth-service';
+import { AlertController } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-menu-profile-options',
@@ -8,19 +10,86 @@ import { IonAvatar, IonIcon, IonButton, IonList, IonItem, IonPopover } from "@io
   styleUrls: ['./menu-profile-options.component.scss'],
   imports: [IonPopover, IonItem, IonList, IonButton, IonIcon, IonAvatar],
 })
-export class MenuProfileOptionsComponent {
-  
-  isLogin = false;
+export class MenuProfileOptionsComponent implements OnInit {
+
+  authService = inject(AuthService)
+  alertController = inject(AlertController)
+
+  userAuth = this.authService.userAuth;
+
+  isPopoverOpen = false;
 
 
-  @ViewChild('popoverContent', { static: true }) popoverContent: any;
+  @ViewChild('popover', { static: true }) popover: any;
 
   constructor(private router: Router) { }
 
-  redirectToLogin(){
+  ngOnInit(): void {
+    this.authService.checkSession().subscribe({
+      next: () => {
+      }
+    });
+  }
+
+  redirectToLogin() {
     this.router.navigate(["/login"])
   }
 
+  async openPopover(event: Event) {
+    if (!this.popover) return
+    this.popover.event = event;
+    this.isPopoverOpen = true;
+  }
+
+  logout() {
+    console.log('logout button pressed');
+    setTimeout(()=>{
+      this.authService.logout().subscribe({
+      next: () => {
+        console.log('Successfully logout');
+      },
+      error: (error)=> {
+        console.log('Error logout');
+        console.log(error);
+      }
+    })
+    }, 150)
+  }
+
+  private closePopover() {
+    this.isPopoverOpen = false;
+
+  }
 
 
+  async logoutAlert() {
+  console.log('logout button pressed');
+  this.isPopoverOpen = false;
+
+  await new Promise(resolve => setTimeout(resolve, 300));
+
+  const alert = await this.alertController.create({
+    header: 'Confirmar',
+    message: '¿Estás seguro de que quieres cerrar la sesión?',
+    buttons: [
+      {
+        text: 'Cancelar',
+        role: 'cancel',
+      },
+      {
+        text: 'Confirmar',
+        role: 'destructive',
+        handler: () => {
+          this.logout();
+        },
+      },
+    ],
+  });
+
+  await alert.present();
+}
+
+  extractUsername(email: string){
+    return email.split('@')[0];
+  }
 }

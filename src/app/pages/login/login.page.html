@@ -1,3 +1,7 @@
 <div class="container_background">
-    <app-log-in></app-log-in>
+    @if(isVerificationEmail){
+        <app-verification-email (changeToLoginPageEvent)="changeToLoginPage()" [user]="user"></app-verification-email>
+    }@else {
+         <app-log-in (changeToVerificationEmailEvent)='changeToVerificationEmailPage($event)' ></app-log-in>
+    }
 </div>

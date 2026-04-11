@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "268921938376",
+    "project_id": "shortfy-3ff2d",
+    "storage_bucket": "shortfy-3ff2d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268921938376:android:1dc0da411e1a6533f560fd",
+        "android_client_info": {
+          "package_name": "io.shortfy.starter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "435102139040-3u1prgc0bc9u7g3iggqfg3nlfmu7mm3s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.shortfy.starter",
+            "certificate_hash": "ee3e5173d040ecba15fbc04308ff5f2b576629b2"
+          }
+        },
+        {
+          "client_id": "435102139040-7g3peavcksvsajr0hpmtpuavbvqldh5q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCn-oZ9uHSlrZ5nJPmxfjVd3lDvc4adISk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "435102139040-7g3peavcksvsajr0hpmtpuavbvqldh5q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

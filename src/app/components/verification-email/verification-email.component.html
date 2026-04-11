@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="container">
+    <div class="icon-container">
+      <app-shortfy-icon class="iconShortify"></app-shortfy-icon>
+      <div class="icon-title">Shortfy</div>
+    </div>
+    <ion-card class="verify-container">
+      <ion-card-content class="verify-content">
+
+        <ion-button (click)="redirectToHome()" class="button-close" fill="clear">
+          <ion-icon class="icon-close" name="close-outline"></ion-icon>
+        </ion-button>
+
+        <div class="email-icon-wrapper">
+          <div class="email-icon-circle">
+            <ion-icon name="mail-outline" class="mail-icon"></ion-icon>
+          </div>
+          <div class="check-badge">
+            <ion-icon name="checkmark-circle" class="check-icon"></ion-icon>
+          </div>
+        </div>
+
+        <h2 class="verify-title">Verify your email</h2>
+
+        <p class="verify-subtitle">We've sent a verification link to</p>
+        <p class="verify-email">{{user.email}}</p>
+
+        <div class="info-box">
+          <p class="info-text">
+            Please check your inbox and click the verification link to
+            activate your account. Don't forget to check your spam folder!
+          </p>
+        </div>
+
+        <ion-button (click)="continueToHome()" class="continue-button" fill="clear">
+          @if (continueButtonLoading) {
+          <ion-spinner name="crescent"></ion-spinner>
+          }@else {
+          <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+          I've verified my email, continue
+          }
+        </ion-button>
+
+        <ion-button (click)="resendEmail()" class="resend-button" fill="clear">
+          @if(resendButtonLoading){
+          <ion-spinner name="crescent"></ion-spinner>
+          }@else {
+          <ion-icon name="refresh-outline" slot="start" class="resend-icon"></ion-icon>
+          Resend verification email
+          }
+        </ion-button>
+
+        @if (errorMessage) {
+        <div class="error-container">
+          <div class="error-text">
+            <ion-icon class="error-icon" name="alert-circle-outline"></ion-icon> {{errorMessage}}
+          </div>
+        </div>
+        }
+
+        <div class="back-link" (click)="goBackToLogin()" fill="clear">
+          Back to login
+        </div>
+
+        <p class="hint-text">Didn't receive the email? Check your spam folder or try resending.</p>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="bottom-text">Shorten your links and track them in one place</div>
+  </div>

@@ -6,7 +6,8 @@ import { IonicStorageModule, provideStorage } from '@ionic/storage-angular';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { importProvidersFrom } from '@angular/core';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './app/interceptors/auth/auth-interceptor';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -17,7 +18,9 @@ bootstrapApplication(AppComponent, {
         name: '__mydb',
       })
     ),
-    provideHttpClient(),
+    provideHttpClient(
+      withInterceptors([authInterceptor])
+    ),
     provideRouter(routes, withPreloading(PreloadAllModules)),
   ],
 });

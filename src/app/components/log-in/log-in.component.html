@@ -8,19 +8,25 @@
     <ion-card-content class="login-content">
       <h2>{{messages.titleMessage}}</h2>
 
-      <div class="form" [formGroup]="form" (ngSubmit)="submit()">
+      <form class="form" [formGroup]="form" (ngSubmit)="submit()">
         <div class="form-group">
           <label class="form-label">Email</label>
           <ion-item lines="none" class="custom-input" [ngClass]="{'error-border': isInvalidControl('email') }">
-            <ion-input formControlName="email" placeholder="Enter your Email"></ion-input>
+            <!-- Input nativo oculto para que el navegador lo detecte -->
+            <input type="email" autocomplete="email" [value]="form.get('email')?.value"
+              style="position:absolute; opacity:0; width:1px; height:1px; top:-9999px" />
+            <ion-input autocomplete="email" (ionBlur)="updateErrorMessage()" formControlName="email"
+              placeholder="Enter your Email"></ion-input>
           </ion-item>
         </div>
 
         <div class="form-group">
           <label class="form-label">Password</label>
           <ion-item lines="none" class="custom-input" [ngClass]="{'error-border': isInvalidControl('password') }">
-            <ion-input formControlName="password" [type]="showPassword ? 'text' : 'password'" type="password"
-              placeholder="Enter your password"></ion-input>
+            <input type="password" autocomplete="current-password" [value]="form.get('password')?.value"
+              style="position:absolute; opacity:0; width:1px; height:1px; top:-9999px" />
+            <ion-input autocomplete="current-password" (ionBlur)="updateErrorMessage()" formControlName="password"
+              [type]="showPassword ? 'text' : 'password'" type="password" placeholder="Enter your password"></ion-input>
             <ion-icon slot="end" [name]="!showPassword ? 'eye-off-outline' : 'eye-outline'"
               (click)="showPassword = !showPassword" class="eye-icon">
             </ion-icon>
@@ -33,11 +39,16 @@
           </div>
         </div>
         }
-        <ion-button (click)="submit()" class="login-button" fill="clear">{{messages.buttonMessage}}</ion-button>
-        <ion-button class="google-button" fill="clear">
-          <app-google-icon class="google-icon" [size]="25"></app-google-icon>
-          Login with google</ion-button>
-      </div>
+        <ion-button (click)="submit()" class="login-button" fill="clear">
+          @if(loading){
+          <ion-spinner class="loading" name="crescent"></ion-spinner>
+          }@else{
+          {{messages.buttonMessage}}
+          }
+        </ion-button>
+        <app-google-login-button [loading]="loadingGoogleButton"
+          (loginSuccess)="loginWithGoogle($event)"></app-google-login-button>
+      </form>
 
       <ion-button (click)="redirectToHome()" class="button-close" fill="clear"><ion-icon class="icon-close"
           name="close-outline"></ion-icon></ion-button>

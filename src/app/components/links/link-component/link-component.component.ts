@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, OnDestroy, OnInit, signal } from '
 import { IonCard, IonCardContent, IonIcon, IonButton } from "@ionic/angular/standalone";
 import { FormsModule } from '@angular/forms';
 import { UrlStorageService } from 'src/app/services/url-storage/url-storage-service';
-import { AlertController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular/standalone';
 import { CopyButtonComponent } from "../../buttons/copy-button/copy-button/copy-button.component";
 import { RelativeTimeComponent } from "../../relative-time/relative-time/relative-time.component";
 
@@ -21,11 +21,8 @@ export class LinkComponentComponent {
 
   links = this.urlStorageService.urls;
 
-  constructor() {
-    effect(() => {
-      console.log(this.links);
-    })
-  }
+  constructor() {}
+  
   filteredLinks = computed(() => {
     const search = this.searchElement().toLowerCase().trim();
     if (!search) return this.links();

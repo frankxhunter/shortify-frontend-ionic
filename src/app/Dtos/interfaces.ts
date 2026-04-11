@@ -19,24 +19,13 @@ export interface UrlRequest {
   accessedAt: string;
 }
 
-export interface RegisterRequest {
-  username: string;
-  email: string;
-  password: string;
-}
-
-export interface LoginRequest {
+export interface User {
   email: string;
   password: string;
 }
 
 export interface AuthResponse {
-  token: string;
-  user: {
-    id: number;
-    username: string;
-    email: string;
-  };
+  textResponse: string;
 }
 
 export interface SessionStatusResponse {
@@ -48,6 +37,6 @@ export interface SessionStatusResponse {
   };
 }
 
-export interface GoogleAuthRequest {
-  idToken: string;
+export interface GoogleAuthResponse {
+  email: string;
 }
