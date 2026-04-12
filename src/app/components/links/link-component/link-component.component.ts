@@ -1,17 +1,17 @@
 import { Component, computed, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { IonCard, IonCardContent, IonIcon, IonButton } from "@ionic/angular/standalone";
 import { FormsModule } from '@angular/forms';
-import { UrlStorageService } from 'src/app/services/url-manager/url-strategy/url-storage/url-storage-service';
 import { AlertController } from '@ionic/angular/standalone';
 import { CopyButtonComponent } from "../../buttons/copy-button/copy-button/copy-button.component";
-import { RelativeTimeComponent } from "../../relative-time/relative-time/relative-time.component";
 import { UrlManager } from 'src/app/services/url-manager/url-manager';
+import { QrCodeButtonComponent } from "../../buttons/qr-code-button/qr-code-button.component";
+import { RelativeTimePipe } from 'src/app/pipes/relative-time-pipe-pipe';
 
 @Component({
   selector: 'app-link-component',
   templateUrl: './link-component.component.html',
   styleUrls: ['./link-component.component.scss'],
-  imports: [IonButton, IonIcon, IonCardContent, IonCard, FormsModule, CopyButtonComponent, RelativeTimeComponent],
+  imports: [RelativeTimePipe, IonButton, IonIcon, IonCardContent, IonCard, FormsModule, CopyButtonComponent, QrCodeButtonComponent],
 })
 export class LinkComponentComponent {
 

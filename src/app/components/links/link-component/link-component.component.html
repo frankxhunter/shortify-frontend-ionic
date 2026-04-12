@@ -30,9 +30,9 @@
           </div>
         </div>
         <div class="container-date-clicks">
-          <div class="date"><app-relative-time [date]="link.creationDate"></app-relative-time></div>
+          <div class="date">{{link.creationDate | relativeTime}}</div>
           <div class="container-stats">
-            <ion-icon name="stats-chart-outline"></ion-icon>
+            <ion-icon class="stats-icon" name="stats-chart-outline"></ion-icon>
             <div class="click-counter">{{link.clickCounter}} clicks</div>
           </div>
         </div>
@@ -42,7 +42,7 @@
       <div class="container-buttons">
         <ion-button class="button stats-button" fill="clear"><ion-icon
             name="stats-chart-outline"></ion-icon></ion-button>
-        <ion-button class="button" fill="clear"><ion-icon name="qr-code-outline"></ion-icon></ion-button>
+        <app-qr-code-button [url]="link.shortUrl"></app-qr-code-button>
         <ion-button class="button" fill="clear"><ion-icon name="create-outline"></ion-icon></ion-button>
         <ion-button class="button delete-button" (click)="deleteLink(link.id)" fill="clear"><ion-icon
             name="trash-outline"></ion-icon></ion-button>
@@ -51,4 +51,5 @@
     </ion-card-content>
   </ion-card>
   }
+  <!-- <app-qr-code-modal [shortUrl]="'asdfasfd.com'"></app-qr-code-modal> -->
 </div>

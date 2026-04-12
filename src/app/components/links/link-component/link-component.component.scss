@@ -101,9 +101,19 @@
     font-size: clamp(0.75rem, 2vw, 0.875rem);
 }
 
+
 .container-stats {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    gap: 4px;
+}
+
+.stats-icon {
+    display: flex;
+    align-items: center;
+    width: clamp(14px, 3vw, 17px);
+    height: clamp(14px, 3vw, 17px);
 }
 
 .container-buttons {

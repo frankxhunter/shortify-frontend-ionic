@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { RelativeTimeComponent } from './relative-time.component';
+import { QrCodeModalComponent } from './qr-code-modal.component';
 
-describe('RelativeTimeComponent', () => {
-  let component: RelativeTimeComponent;
-  let fixture: ComponentFixture<RelativeTimeComponent>;
+describe('QrCodeModalComponent', () => {
+  let component: QrCodeModalComponent;
+  let fixture: ComponentFixture<QrCodeModalComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RelativeTimeComponent ],
+      declarations: [ QrCodeModalComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RelativeTimeComponent);
+    fixture = TestBed.createComponent(QrCodeModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

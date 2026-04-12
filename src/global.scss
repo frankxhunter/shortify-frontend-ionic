@@ -56,3 +56,18 @@ ion-card-title {
   color-scheme: light only;
 }
 
+
+.qr-modal {
+  // Móvil: sheet desde abajo
+  --border-radius: 20px 20px 0 0;
+  align-items: flex-end;
+
+  @media (min-width: 768px) {
+    // Desktop: centrado
+    --width: 420px;
+    --height: 460px;
+    --border-radius: 16px;
+    align-items: center;
+    justify-content: center;
+  }
+}
