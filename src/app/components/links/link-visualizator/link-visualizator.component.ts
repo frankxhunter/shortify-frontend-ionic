@@ -1,7 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { IonCard, IonCardTitle, IonCardContent, IonIcon, IonCardSubtitle } from "@ionic/angular/standalone";
 import { LinkComponentComponent } from "../link-component/link-component.component";
-import { UrlStorageService } from 'src/app/services/url-storage/url-storage-service';
+import { UrlStorageService } from 'src/app/services/url-manager/url-strategy/url-storage/url-storage-service';
+import { UrlManager } from 'src/app/services/url-manager/url-manager';
 
 @Component({
   selector: 'app-link-visualizator',
@@ -9,16 +10,17 @@ import { UrlStorageService } from 'src/app/services/url-storage/url-storage-serv
   styleUrls: ['./link-visualizator.component.scss'],
   imports: [IonCardSubtitle, IonIcon, IonCardContent, IonCardTitle, IonCard, LinkComponentComponent],
 })
-export class LinkVisualizatorComponent  implements OnInit {
-  
-  urlStorageService = inject(UrlStorageService)
+export class LinkVisualizatorComponent implements OnInit {
+
+  urlService = inject(UrlManager)
+  urls = this.urlService.urls
 
   constructor() { }
-  
-  ngOnInit() {}
-  
+
+  ngOnInit() { }
+
   contentIsEmpty() {
-    return this.urlStorageService.count() === 0;
+    return this.urls().length === 0;
   }
 
 }

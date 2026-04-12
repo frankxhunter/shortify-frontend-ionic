@@ -1,11 +1,10 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { IonCardContent, IonCard, IonButton, IonIcon, IonItem, IonInput, IonSpinner } from "@ionic/angular/standalone";
 import { ShortfyIconComponent } from "../icons/shortfy-icon/shortfy-icon.component";
-import { GoogleIconComponent } from "../icons/google-icon/google-icon.component";
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgClass } from '@angular/common';
-import { ApiService } from 'src/app/services/api-service/api-service';
+import { ApiService } from 'src/app/services/url-manager/url-strategy/api-service/api-service';
 import { User } from 'src/app/Dtos/interfaces';
 import { AuthService } from 'src/app/services/auth-service/auth-service';
 import { GoogleLoginButtonComponent } from "../buttons/google-login-button/google-login-button.component";
@@ -34,7 +33,7 @@ const enum LOGIN_TYPE { LOGIN = "login", SIGNUP = "signup" }
   selector: 'app-log-in',
   templateUrl: './log-in.component.html',
   styleUrls: ['./log-in.component.scss'],
-  imports: [IonSpinner, IonInput, IonItem, IonIcon, IonButton, IonCard, IonCardContent, ShortfyIconComponent, GoogleIconComponent, ReactiveFormsModule, NgClass, GoogleLoginButtonComponent],
+  imports: [IonSpinner, IonInput, IonItem, IonIcon, IonButton, IonCard, IonCardContent, ShortfyIconComponent, ReactiveFormsModule, NgClass, GoogleLoginButtonComponent],
 })
 export class LogInComponent implements OnInit {
 

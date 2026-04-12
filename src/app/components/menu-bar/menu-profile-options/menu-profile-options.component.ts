@@ -10,7 +10,7 @@ import { AlertController } from '@ionic/angular/standalone';
   styleUrls: ['./menu-profile-options.component.scss'],
   imports: [IonPopover, IonItem, IonList, IonButton, IonIcon, IonAvatar],
 })
-export class MenuProfileOptionsComponent implements OnInit {
+export class MenuProfileOptionsComponent {
 
   authService = inject(AuthService)
   alertController = inject(AlertController)
@@ -23,13 +23,6 @@ export class MenuProfileOptionsComponent implements OnInit {
   @ViewChild('popover', { static: true }) popover: any;
 
   constructor(private router: Router) { }
-
-  ngOnInit(): void {
-    this.authService.checkSession().subscribe({
-      next: () => {
-      }
-    });
-  }
 
   redirectToLogin() {
     this.router.navigate(["/login"])

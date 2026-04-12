@@ -3,7 +3,7 @@ import { IonButton, IonIcon, IonCard, IonCardContent, IonSpinner } from "@ionic/
 import { ShortfyIconComponent } from "../icons/shortfy-icon/shortfy-icon.component";
 import { AlertController } from '@ionic/angular/standalone';
 import { User } from 'src/app/Dtos/interfaces';
-import { ApiService } from 'src/app/services/api-service/api-service';
+import { ApiService } from 'src/app/services/url-manager/url-strategy/api-service/api-service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth-service/auth-service';
 

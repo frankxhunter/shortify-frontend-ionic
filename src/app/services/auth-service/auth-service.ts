@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, OnInit, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { GoogleAuthResponse, User } from 'src/app/Dtos/interfaces';
 import { environment } from 'src/environments/environment';
+import { ApiService } from '../url-manager/url-strategy/api-service/api-service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,13 @@ export class AuthService {
 
   private readonly baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  private apiService = inject(ApiService)
+
+  constructor(private http: HttpClient) {
+    this.checkSession().subscribe({
+      next: () => {}
+    })
+   }
 
   userAuth = signal('')
 

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LogInComponent } from "src/app/components/log-in/log-in.component";
 import { VerificationEmailComponent } from "src/app/components/verification-email/verification-email.component";
-import { ShortfyIconComponent } from "src/app/components/icons/shortfy-icon/shortfy-icon.component";
 import { User } from 'src/app/Dtos/interfaces';
 
 @Component({
@@ -11,7 +10,7 @@ import { User } from 'src/app/Dtos/interfaces';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, LogInComponent, VerificationEmailComponent, ShortfyIconComponent]
+  imports: [CommonModule, FormsModule, LogInComponent, VerificationEmailComponent]
 })
 export class LoginPage implements OnInit {
 

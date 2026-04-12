@@ -2,8 +2,9 @@ import { Component, inject, OnInit } from '@angular/core';
 import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonItem, IonInput, IonButton, IonIcon, IonSpinner } from "@ionic/angular/standalone";
 import { ShortfyIconComponent } from "../../icons/shortfy-icon/shortfy-icon.component";
 import { FormsModule } from '@angular/forms';
-import { UrlStorageService } from 'src/app/services/url-storage/url-storage-service';
-import { ApiService } from 'src/app/services/api-service/api-service';
+import { UrlStorageService } from 'src/app/services/url-manager/url-strategy/url-storage/url-storage-service';
+import { ApiService } from 'src/app/services/url-manager/url-strategy/api-service/api-service';
+import { UrlManager } from 'src/app/services/url-manager/url-manager';
 
 @Component({
   selector: 'app-short-creator',
@@ -18,8 +19,7 @@ export class ShortCreatorComponent implements OnInit {
   urlError: boolean = false;
   loading: boolean = false
 
-  urlStorageService = inject(UrlStorageService)
-  apiService = inject(ApiService)
+  urlService = inject(UrlManager)
 
   validateUrl() {
     const pattern = /^(https?:\/\/)/i;
@@ -28,12 +28,12 @@ export class ShortCreatorComponent implements OnInit {
 
   createUrl(){
     this.loading = true;
-    this.apiService.createUrl({url: this.url, name: this.linkName}).subscribe({
+
+    this.urlService.add({url: this.url, name: this.linkName}).subscribe({
       next: (urlCreated)=>{
         console.log('Url create successfully');
         console.log(urlCreated);
         this.loading = false;
-        this.urlStorageService.addUrl(urlCreated);
         this.url = '';
         this.linkName = ''
       },

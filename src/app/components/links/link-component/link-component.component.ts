@@ -1,10 +1,11 @@
 import { Component, computed, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { IonCard, IonCardContent, IonIcon, IonButton } from "@ionic/angular/standalone";
 import { FormsModule } from '@angular/forms';
-import { UrlStorageService } from 'src/app/services/url-storage/url-storage-service';
+import { UrlStorageService } from 'src/app/services/url-manager/url-strategy/url-storage/url-storage-service';
 import { AlertController } from '@ionic/angular/standalone';
 import { CopyButtonComponent } from "../../buttons/copy-button/copy-button/copy-button.component";
 import { RelativeTimeComponent } from "../../relative-time/relative-time/relative-time.component";
+import { UrlManager } from 'src/app/services/url-manager/url-manager';
 
 @Component({
   selector: 'app-link-component',
@@ -14,15 +15,18 @@ import { RelativeTimeComponent } from "../../relative-time/relative-time/relativ
 })
 export class LinkComponentComponent {
 
-  urlStorageService = inject(UrlStorageService)
+  urlService = inject(UrlManager)
   alertController = inject(AlertController);
-
   searchElement = signal('');
 
-  links = this.urlStorageService.urls;
+  links = computed(() => {
+    return this.urlService.urls().sort((a, b) =>
+      new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
+    );
+  })
 
-  constructor() {}
-  
+  constructor() { }
+
   filteredLinks = computed(() => {
     const search = this.searchElement().toLowerCase().trim();
     if (!search) return this.links();
@@ -47,7 +51,7 @@ export class LinkComponentComponent {
           text: 'Eliminar',
           role: 'destructive',
           handler: () => {
-            this.urlStorageService.removeUrl(id);
+            this.urlService.remove(id);
           },
         },
       ],
