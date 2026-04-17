@@ -1,3 +1,32 @@
+:host {
+  display: block;
+}
+
+.modal-wrapper {
+  background: var(--ion-background-color, #fff);
+  border-radius: 20px 20px 0 0;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  gap: 12px;
+
+  .modal-title {
+    flex: 1;
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  .close-btn {
+    --padding-start: 4px;
+    --padding-end: 4px;
+    margin: 0;
+  }
+}
+
 .qr-icon-wrapper {
   width: 40px;
   height: 40px;
@@ -6,7 +35,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 8px;
 
   ion-icon {
     font-size: 22px;
@@ -14,17 +42,22 @@
   }
 }
 
+.modal-content {
+  padding: 0 16px 16px;
+}
+
 .url-label {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--ion-color-medium);
-  margin-bottom: 4px;
+  margin: 0 0 4px;
 }
 
 .url-text {
   font-size: 14px;
-  margin-bottom: 16px;
+  margin: 0 0 16px;
+  word-break: break-all;
 }
 
 .qr-container {
@@ -34,7 +67,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 220px;
   margin-bottom: 24px;
 
   img {
@@ -56,6 +88,7 @@
       flex: 1.5;
       --background: #7f77dd;
       --background-activated: #534ab7;
+      --color: #ffffff;
     }
   }
 }

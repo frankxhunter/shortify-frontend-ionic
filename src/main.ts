@@ -6,7 +6,7 @@ import { IonicStorageModule, provideStorage } from '@ionic/storage-angular';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { importProvidersFrom } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './app/interceptors/auth/auth-interceptor';
 
@@ -14,7 +14,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
-    ModalController,
+    Platform,
     importProvidersFrom(
       IonicStorageModule.forRoot({
         name: '__mydb',

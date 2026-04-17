@@ -1,2 +1,13 @@
-<ion-button (click)="openQrModal()" class="button" fill="clear"><ion-icon
-    name="qr-code-outline"></ion-icon></ion-button>
+<ion-button fill="clear" (click)="openQrModal()">
+  <ion-icon name="qr-code-outline"></ion-icon>
+</ion-button>
+
+<ion-modal #modal
+  [backdropDismiss]="true"
+  cssClass="qr-modal"
+  [breakpoints]="breakpoints"
+  [initialBreakpoint]="initialBreakpoint">
+  <ng-template>
+    <app-qr-code-modal [shortUrl]="url" (dismissed)="closeModal()"></app-qr-code-modal>
+  </ng-template>
+</ion-modal>

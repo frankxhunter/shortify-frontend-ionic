@@ -1,39 +1,35 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <div class="qr-icon-wrapper">
-        <ion-icon name="qr-code-outline"></ion-icon>
-      </div>
-    </ion-buttons>
-    <ion-title>QR Code</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismiss()" fill="clear">
-        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+<div class="modal-wrapper">
+  <div class="modal-header">
+    <div class="qr-icon-wrapper">
+      <ion-icon name="qr-code-outline"></ion-icon>
+    </div>
+    <span class="modal-title">QR Code</span>
+    <ion-button (click)="dismiss()" fill="clear" class="close-btn">
+      <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+  </div>
+
+  <div class="modal-content">
+    <p class="url-label">Short URL</p>
+    <p class="url-text">{{ shortUrl }}</p>
+
+    <div class="qr-container">
+      @if(isLoading){
+        <ion-spinner name="crescent"></ion-spinner>
+      }
+      @if(!isLoading && qrDataUrl){
+        <img [src]="qrDataUrl" alt="QR Code" />
+      }
+    </div>
+
+    <div class="actions">
+      <ion-button expand="block" fill="outline" color="medium" (click)="dismiss()">
+        Close
       </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content class="ion-padding">
-  <p class="url-label">Short URL</p>
-  <p class="url-text">{{ shortUrl }}</p>
-
-  <div class="qr-container">
-    @if(isLoading){
-      <ion-spinner name="crescent"></ion-spinner>
-    }
-    @if(!isLoading && qrDataUrl){
-      <img [src]="qrDataUrl" alt="QR Code" />
-    }
+      <ion-button expand="block" [disabled]="isLoading" (click)="downloadQR()">
+        <ion-icon name="download-outline" slot="start"></ion-icon>
+        Download
+      </ion-button>
+    </div>
   </div>
-
-  <div class="actions">
-    <ion-button expand="block" fill="outline" color="medium" (click)="dismiss()">
-      Close
-    </ion-button>
-    <ion-button expand="block" [disabled]="isLoading" (click)="downloadQR()">
-      <ion-icon name="download-outline" slot="start"></ion-icon>
-      Download
-    </ion-button>
-  </div>
-</ion-content>
+</div>
