@@ -40,13 +40,13 @@
 
 
       <div class="container-buttons">
-        <ion-button class="button stats-button" fill="clear"><ion-icon
+        <ion-button (click)="developerAdvertance()" class="button stats-button" fill="clear"><ion-icon
             name="stats-chart-outline"></ion-icon></ion-button>
         <app-qr-code-button [url]="link.shortUrl"></app-qr-code-button>
-        <ion-button class="button" fill="clear"><ion-icon name="create-outline"></ion-icon></ion-button>
+        <ion-button (click)="developerAdvertance()" class="button" fill="clear"><ion-icon name="create-outline"></ion-icon></ion-button>
         <ion-button class="button delete-button" (click)="deleteLink(link.id)" fill="clear"><ion-icon
             name="trash-outline"></ion-icon></ion-button>
-        <ion-button class="button" fill="clear"><ion-icon name="settings-outline"></ion-icon></ion-button>
+        <ion-button (click)="developerAdvertance()" class="button" fill="clear"><ion-icon name="settings-outline"></ion-icon></ion-button>
       </div>
     </ion-card-content>
   </ion-card>

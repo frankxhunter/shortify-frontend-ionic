@@ -59,4 +59,20 @@ export class LinkComponentComponent {
 
     await alert.present();
   }
+
+
+  async developerAdvertance() {
+  const alert = await this.alertController.create({
+    header: 'En desarrollo',
+    message: 'Esta característica está bajo desarrollo y pronto estará disponible.',
+    buttons: [
+      {
+        text: 'Entendido',
+        role: 'cancel',
+      },
+    ],
+  });
+
+  await alert.present();
+}
 }
