@@ -23,7 +23,7 @@ export class ShortCreatorComponent implements OnInit {
   urlService = inject(UrlManager)
 
   validateUrl() {
-    const pattern = /^(https?:\/\/)/i;
+    const pattern = /^(https?|ftp):\/\/([a-z0-9-]+\.)+[a-z0-9]{2,4}(\/[^\s]*)?$/;
     this.urlError = !pattern.test(this.url);
   }
 
