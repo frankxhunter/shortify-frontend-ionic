@@ -13,39 +13,14 @@
         --color: var(--ion-color-success);
     }
 
-    .tooltip {
-  position: absolute;
+    .custom-toast {
+        --background: #1e1e1e;
+        --color: #fff;
 
-  left: calc(100% + 8px); // 👉 a la derecha del botón
-  top: 50%;
-  transform: translateY(-50%) translateX(-4px);
+        --border-radius: 12px;
+        --box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 
-  background: var(--ion-color-dark);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 6px;
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
 
-  z-index: 9999;
-
-  transition: opacity 0.2s ease, transform 0.2s ease;
-
-  &::after {
-    content: '';
-    position: absolute;
-    right: 100%; // 👉 flecha hacia el botón
-    top: 50%;
-    transform: translateY(-50%);
-    border: 5px solid transparent;
-    border-right-color: var(--ion-color-dark);
-  }
-}
-
-.tooltip.visible {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0);
-}
+        font-weight: 500;
+        padding: 10px;
+    }
