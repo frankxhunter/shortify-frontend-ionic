@@ -15,9 +15,6 @@ export class AuthService {
   private apiService = inject(ApiService)
 
   constructor(private http: HttpClient) {
-    this.checkSession().subscribe({
-      next: () => {}
-    })
    }
 
   userAuth = signal('')
