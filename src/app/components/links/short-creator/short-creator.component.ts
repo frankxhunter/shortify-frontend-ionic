@@ -5,12 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { UrlStorageService } from 'src/app/services/url-manager/url-strategy/url-storage/url-storage-service';
 import { ApiService } from 'src/app/services/url-manager/url-strategy/api-service/api-service';
 import { UrlManager } from 'src/app/services/url-manager/url-manager';
+import { TranslatePipe } from 'src/app/pipes/translate.pipe';
 
 @Component({
   selector: 'app-short-creator',
   templateUrl: './short-creator.component.html',
   styleUrls: ['./short-creator.component.scss'],
-  imports: [IonSpinner, IonIcon, IonButton, IonInput, IonItem, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, ShortfyIconComponent, FormsModule],
+  imports: [TranslatePipe, IonSpinner, IonIcon, IonButton, IonInput, IonItem, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, ShortfyIconComponent, FormsModule],
 })
 export class ShortCreatorComponent implements OnInit {
 

@@ -1,32 +1,32 @@
 <div class="container">
   <div class="icon-container">
     <app-shortfy-icon class="iconShortify"></app-shortfy-icon>
-    <div class="icon-title">Shortfy</div>
-    <div class="icon-subTitle">{{messages.iconMessage}}</div>
+    <div class="icon-title">{{ 'app.name' | translate }}</div>
+    <div class="icon-subTitle">{{ messages.iconMessage | translate }}</div>
   </div>
   <ion-card class="login-container">
     <ion-card-content class="login-content">
-      <h2>{{messages.titleMessage}}</h2>
+      <h2>{{ messages.titleMessage | translate }}</h2>
 
       <form class="form" [formGroup]="form" (ngSubmit)="submit()">
         <div class="form-group">
-          <label class="form-label">Email</label>
+          <label class="form-label">{{ 'auth.emailLabel' | translate }}</label>
           <ion-item lines="none" class="custom-input" [ngClass]="{'error-border': isInvalidControl('email') }">
             <!-- Input nativo oculto para que el navegador lo detecte -->
             <input type="email" autocomplete="email" [value]="form.get('email')?.value"
               style="position:absolute; opacity:0; width:1px; height:1px; top:-9999px" />
             <ion-input autocomplete="email" (ionBlur)="updateErrorMessage()" formControlName="email"
-              placeholder="Enter your Email"></ion-input>
+              [placeholder]="'auth.emailPlaceholder' | translate"></ion-input>
           </ion-item>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Password</label>
+          <label class="form-label">{{ 'auth.passwordLabel' | translate }}</label>
           <ion-item lines="none" class="custom-input" [ngClass]="{'error-border': isInvalidControl('password') }">
             <input type="password" autocomplete="current-password" [value]="form.get('password')?.value"
               style="position:absolute; opacity:0; width:1px; height:1px; top:-9999px" />
             <ion-input autocomplete="current-password" (ionBlur)="updateErrorMessage()" formControlName="password"
-              [type]="showPassword ? 'text' : 'password'" type="password" placeholder="Enter your password"></ion-input>
+              [type]="showPassword ? 'text' : 'password'" type="password" [placeholder]="'auth.passwordPlaceholder' | translate"></ion-input>
             <ion-icon slot="end" [name]="!showPassword ? 'eye-off-outline' : 'eye-outline'"
               (click)="showPassword = !showPassword" class="eye-icon">
             </ion-icon>
@@ -43,7 +43,7 @@
           @if(loading){
           <ion-spinner class="loading" name="crescent"></ion-spinner>
           }@else{
-          {{messages.buttonMessage}}
+          {{ messages.buttonMessage | translate }}
           }
         </ion-button>
         <app-google-login-button [loading]="loadingGoogleButton"
@@ -53,8 +53,8 @@
       <ion-button (click)="redirectToHome()" class="button-close" fill="clear"><ion-icon class="icon-close"
           name="close-outline"></ion-icon></ion-button>
 
-      <div class="changeTypeOfLinkMessage" (click)="changeLoginType()">{{messages.changeButton}}</div>
+      <div class="changeTypeOfLinkMessage" (click)="changeLoginType()">{{ messages.changeButton | translate }}</div>
     </ion-card-content>
   </ion-card>
-  <div class="bottom-text">Shorten your links and track them in one place</div>
+  <div class="bottom-text">{{ 'app.tagline' | translate }}</div>
 </div>

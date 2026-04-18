@@ -4,6 +4,7 @@ import { GoogleIconComponent } from '../../icons/google-icon/google-icon.compone
 import { environment } from 'src/environments/environment';
 import { Capacitor } from '@capacitor/core';
 import { SocialLogin } from '@capgo/capacitor-social-login';
+import { TranslatePipe } from 'src/app/pipes/translate.pipe';
 
 declare const google: any;
 
@@ -12,7 +13,7 @@ declare const google: any;
   templateUrl: './google-login-button.component.html',
   styleUrls: ['./google-login-button.component.scss'],
   standalone: true,
-  imports: [IonSpinner, IonButton, GoogleIconComponent]
+  imports: [TranslatePipe, IonSpinner, IonButton, GoogleIconComponent]
 })
 export class GoogleLoginButtonComponent {
   @Output() loginSuccess = new EventEmitter<string>();

@@ -11,21 +11,21 @@
   } @else {
   <ion-button class="sign-button" (click)="redirectToLogin()">
     <ion-icon name="log-in-outline" class="sign-icon"></ion-icon>
-    Sign in
+    {{ 'profile.signIn' | translate }}
   </ion-button>
   }
 
   <ion-popover #popover [isOpen]="isPopoverOpen" [dismissOnSelect]="false" (didDismiss)="isPopoverOpen = false">
     <ng-template>
       <div class="popover-content">
-        <div class="profile-info">
-          <span class="label">Signed in as</span>
+      <div class="profile-info">
+          <span class="label">{{ 'profile.signedInAs' | translate }}</span>
           <strong>{{userAuth()}}</strong>
         </div>
         <ion-list lines="none">
           <ion-item class="item-list" button (click)="logoutAlert()">
             <ion-icon class="icon-logout" name="log-out-outline" slot="start"></ion-icon>
-            Log out
+            {{ 'profile.logOut' | translate }}
           </ion-item>
         </ion-list>
       </div>

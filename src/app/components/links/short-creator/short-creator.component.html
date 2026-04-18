@@ -1,27 +1,25 @@
 <ion-card class="card_container">
   <ion-card-header class="header">
-    <ion-card-title class="card_title"> <app-shortfy-icon [isInvertColor]="true"></app-shortfy-icon> Shorten a
-      link</ion-card-title>
-    <ion-card-subtitle class="card_subtitle">Paste your long URL below and get a short link
-      instantly</ion-card-subtitle>
+    <ion-card-title class="card_title"> <app-shortfy-icon [isInvertColor]="true"></app-shortfy-icon> {{ 'home.shortenTitle' | translate }}</ion-card-title>
+    <ion-card-subtitle class="card_subtitle">{{ 'home.shortenSubtitle' | translate }}</ion-card-subtitle>
   </ion-card-header>
 
   <ion-card-content class="card_content">
     <div>
       <ion-item lines="none" class="custom-item">
-        <ion-input type="url" placeholder="https://example.com" [(ngModel)]="url" (ionBlur)="validateUrl()"
+        <ion-input type="url" [placeholder]="'home.urlPlaceholder' | translate" [(ngModel)]="url" (ionBlur)="validateUrl()"
           class="custom-input">
         </ion-input>
       </ion-item>
       @if (urlError) {
       <p class="error-text">
-        Please enter a valid URL (including http:// or https://)
+        {{ 'home.invalidUrl' | translate }}
       </p>
       }
     </div>
 
     <ion-item lines="none" class="custom-item">
-      <ion-input type="text" placeholder="Optional: Name your link (e.g., 'Blog post', 'Product page')"
+      <ion-input type="text" [placeholder]="'home.namePlaceholder' | translate"
         [(ngModel)]="linkName" class="custom-input">
       </ion-input>
     </ion-item>
@@ -29,7 +27,7 @@
       @if (loading) {
         <ion-spinner name="crescent"></ion-spinner>
       }@else {
-        <ion-icon class="icon-button" name="link"></ion-icon>Shorten Link
+        <ion-icon class="icon-button" name="link"></ion-icon>{{ 'home.shortenButton' | translate }}
       }
     </ion-button>
   </ion-card-content>

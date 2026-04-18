@@ -8,20 +8,22 @@ import { ApiService } from 'src/app/services/url-manager/url-strategy/api-servic
 import { User } from 'src/app/Dtos/interfaces';
 import { AuthService } from 'src/app/services/auth-service/auth-service';
 import { GoogleLoginButtonComponent } from "../buttons/google-login-button/google-login-button.component";
+import { I18nService } from 'src/app/services/i18n/i18n.service';
+import { TranslatePipe } from 'src/app/pipes/translate.pipe';
 
 
 const messagesForLogin = {
   login: {
-    iconMessage: 'Welcome back',
-    titleMessage: 'Log in',
-    buttonMessage: 'Log in',
-    changeButton: 'Don\'t have an account? Sign up'
+    iconMessage: 'auth.login.iconMessage',
+    titleMessage: 'auth.login.titleMessage',
+    buttonMessage: 'auth.login.buttonMessage',
+    changeButton: 'auth.login.changeButton'
   },
   signup: {
-    iconMessage: 'Create your account to get started',
-    titleMessage: 'Sign up',
-    buttonMessage: 'Create account',
-    changeButton: 'Already have an account? Log in'
+    iconMessage: 'auth.signup.iconMessage',
+    titleMessage: 'auth.signup.titleMessage',
+    buttonMessage: 'auth.signup.buttonMessage',
+    changeButton: 'auth.signup.changeButton'
   }
 }
 
@@ -33,7 +35,7 @@ const enum LOGIN_TYPE { LOGIN = "login", SIGNUP = "signup" }
   selector: 'app-log-in',
   templateUrl: './log-in.component.html',
   styleUrls: ['./log-in.component.scss'],
-  imports: [IonSpinner, IonInput, IonItem, IonIcon, IonButton, IonCard, IonCardContent, ShortfyIconComponent, ReactiveFormsModule, NgClass, GoogleLoginButtonComponent],
+  imports: [TranslatePipe, IonSpinner, IonInput, IonItem, IonIcon, IonButton, IonCard, IonCardContent, ShortfyIconComponent, ReactiveFormsModule, NgClass, GoogleLoginButtonComponent],
 })
 export class LogInComponent implements OnInit {
 
@@ -42,6 +44,7 @@ export class LogInComponent implements OnInit {
 
   apiService = inject(ApiService)
   authService = inject(AuthService)
+  i18nService = inject(I18nService)
   @Output() changeToVerificationEmailEvent = new EventEmitter<User>();
 
   form!: FormGroup;
@@ -133,7 +136,7 @@ export class LogInComponent implements OnInit {
       },
       error: (err) => {
         console.log(err);
-        this.errorText = "Google login failed";
+        this.errorText = this.i18nService.translate('auth.googleLoginFailed');
         this.loadingGoogleButton = false;
       }
     })
@@ -155,22 +158,22 @@ export class LogInComponent implements OnInit {
 
     if (email?.touched && email.invalid) {
       if (email.errors?.['required']) {
-        this.errorText = 'Email is required';
+        this.errorText = this.i18nService.translate('auth.emailRequired');
         return;
       }
       else {
-        this.errorText = 'Invalid email format';
+        this.errorText = this.i18nService.translate('auth.invalidEmail');
         return;
       }
     }
 
     if (password?.touched && password.invalid) {
       if (password.errors?.['required']) {
-        this.errorText = 'Password is required';
+        this.errorText = this.i18nService.translate('auth.passwordRequired');
         return;
       }
       else {
-        this.errorText = 'Password must contain uppercase, lowercase, number and symbol (8-16 chars)';
+        this.errorText = this.i18nService.translate('auth.invalidPassword');
         return;
       }
     }

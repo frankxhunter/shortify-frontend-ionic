@@ -4,13 +4,15 @@ import { IonContent, IonButton, IonIcon, IonSpinner, IonButtons, IonHeader, IonT
 import { Capacitor } from '@capacitor/core';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
+import { I18nService } from 'src/app/services/i18n/i18n.service';
+import { TranslatePipe } from 'src/app/pipes/translate.pipe';
 
 @Component({
   selector: 'app-qr-code-modal',
   templateUrl: './qr-code-modal.component.html',
   styleUrls: ['./qr-code-modal.component.scss'],
   standalone: true,
-  imports: [IonButton, IonIcon, IonSpinner],
+  imports: [TranslatePipe, IonButton, IonIcon, IonSpinner],
 })
 export class QrCodeModalComponent implements OnInit {
   @Input() shortUrl: string = '';
@@ -18,6 +20,8 @@ export class QrCodeModalComponent implements OnInit {
 
   qrDataUrl: string = '';
   isLoading: boolean = true;
+
+  constructor(private readonly i18nService: I18nService) {}
 
   async ngOnInit() {
     await this.generateQR();
@@ -57,10 +61,10 @@ async downloadQR() {
       });
 
       await Share.share({
-        title: 'QR Code',
-        text: 'Mi código QR',
+        title: this.i18nService.translate('home.qrShareTitle'),
+        text: this.i18nService.translate('home.qrShareText'),
         url: savedFile.uri,
-        dialogTitle: 'Guardar o compartir QR',
+        dialogTitle: this.i18nService.translate('home.qrShareDialog'),
       });
     } catch (err) {
       console.error('Error al guardar/compartir QR:', err);

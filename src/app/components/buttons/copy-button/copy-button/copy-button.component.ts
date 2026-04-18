@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Clipboard } from '@capacitor/clipboard';
 import { IonCard, IonCardContent, IonIcon, IonButton } from "@ionic/angular/standalone";
+import { TranslatePipe } from 'src/app/pipes/translate.pipe';
 
 @Component({
   selector: 'app-copy-button',
   templateUrl: './copy-button.component.html',
-  imports: [IonButton, IonIcon],
+  imports: [TranslatePipe, IonButton, IonIcon],
   styleUrls: ['./copy-button.component.scss'],
 })
 export class CopyButtonComponent {

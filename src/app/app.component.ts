@@ -3,6 +3,7 @@ import { Capacitor } from '@capacitor/core';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Platform } from '@ionic/angular';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { I18nService } from './services/i18n/i18n.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +11,10 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
   imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent {
-  constructor(private platform: Platform) { }
+  constructor(private platform: Platform, private i18nService: I18nService) { }
 
   async ngOnInit() {
+    this.i18nService.language();
     await this.platform.ready();
 
     if (Capacitor.isNativePlatform()) {

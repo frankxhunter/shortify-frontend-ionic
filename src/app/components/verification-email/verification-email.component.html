@@ -2,7 +2,7 @@
   <div class="container">
     <div class="icon-container">
       <app-shortfy-icon class="iconShortify"></app-shortfy-icon>
-      <div class="icon-title">Shortfy</div>
+      <div class="icon-title">{{ 'app.name' | translate }}</div>
     </div>
     <ion-card class="verify-container">
       <ion-card-content class="verify-content">
@@ -20,15 +20,14 @@
           </div>
         </div>
 
-        <h2 class="verify-title">Verify your email</h2>
+        <h2 class="verify-title">{{ 'auth.verification.title' | translate }}</h2>
 
-        <p class="verify-subtitle">We've sent a verification link to</p>
+        <p class="verify-subtitle">{{ 'auth.verification.subtitle' | translate }}</p>
         <p class="verify-email">{{user.email}}</p>
 
         <div class="info-box">
           <p class="info-text">
-            Please check your inbox and click the verification link to
-            activate your account. Don't forget to check your spam folder!
+            {{ 'auth.verification.info' | translate }}
           </p>
         </div>
 
@@ -37,7 +36,7 @@
           <ion-spinner name="crescent"></ion-spinner>
           }@else {
           <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
-          I've verified my email, continue
+          {{ 'auth.verification.continue' | translate }}
           }
         </ion-button>
 
@@ -46,7 +45,7 @@
           <ion-spinner name="crescent"></ion-spinner>
           }@else {
           <ion-icon name="refresh-outline" slot="start" class="resend-icon"></ion-icon>
-          Resend verification email
+          {{ 'auth.verification.resend' | translate }}
           }
         </ion-button>
 
@@ -59,12 +58,12 @@
         }
 
         <div class="back-link" (click)="goBackToLogin()" fill="clear">
-          Back to login
+          {{ 'auth.verification.backToLogin' | translate }}
         </div>
 
-        <p class="hint-text">Didn't receive the email? Check your spam folder or try resending.</p>
+        <p class="hint-text">{{ 'auth.verification.hint' | translate }}</p>
       </ion-card-content>
     </ion-card>
 
-    <div class="bottom-text">Shorten your links and track them in one place</div>
+    <div class="bottom-text">{{ 'app.tagline' | translate }}</div>
   </div>

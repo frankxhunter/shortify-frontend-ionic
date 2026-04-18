@@ -1,14 +1,14 @@
 <div class="links">
 
   <div class="header">
-    <div class="title">Your links</div>
-    <div class="subtitle"> {{links().length}} link{{links.length > 1? "s": ""}} created</div>
+    <div class="title">{{ 'home.linksTitle' | translate }}</div>
+    <div class="subtitle">{{ linksCreatedMessage() }}</div>
   </div>
 
   <ion-card class="search-container">
     <ion-icon name="search-outline" class="search-icon"></ion-icon>
 
-    <input [(ngModel)]="searchElement" type="text" placeholder="Search by link name, short link, or original URL..."  class="search-input" />
+    <input [(ngModel)]="searchElement" type="text" [placeholder]="'home.searchPlaceholder' | translate"  class="search-input" />
   </ion-card>
 
   @for (link of filteredLinks(); track link.id) {
@@ -33,7 +33,7 @@
           <div class="date">{{link.creationDate | relativeTime}}</div>
           <div class="container-stats">
             <ion-icon class="stats-icon" name="stats-chart-outline"></ion-icon>
-            <div class="click-counter">{{link.clickCounter}} clicks</div>
+            <div class="click-counter">{{ clicksLabel(link.clickCounter) }}</div>
           </div>
         </div>
       </div>
@@ -51,5 +51,4 @@
     </ion-card-content>
   </ion-card>
   }
-  <!-- <app-qr-code-modal [shortUrl]="'asdfasfd.com'"></app-qr-code-modal> -->
 </div>

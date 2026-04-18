@@ -6,18 +6,21 @@ import { User } from 'src/app/Dtos/interfaces';
 import { ApiService } from 'src/app/services/url-manager/url-strategy/api-service/api-service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth-service/auth-service';
+import { I18nService } from 'src/app/services/i18n/i18n.service';
+import { TranslatePipe } from 'src/app/pipes/translate.pipe';
 
 @Component({
   selector: 'app-verification-email',
   templateUrl: './verification-email.component.html',
   styleUrls: ['./verification-email.component.scss'],
-  imports: [IonSpinner, IonCardContent, IonCard, IonIcon, IonButton, ShortfyIconComponent],
+  imports: [TranslatePipe, IonSpinner, IonCardContent, IonCard, IonIcon, IonButton, ShortfyIconComponent],
 })
 export class VerificationEmailComponent implements OnInit {
 
   apiService = inject(ApiService);
   authService = inject(AuthService);
   alertController = inject(AlertController);
+  i18nService = inject(I18nService);
 
   @Input() user!: User;
   @Output() changeToLoginPageEvent = new EventEmitter();
@@ -48,11 +51,11 @@ export class VerificationEmailComponent implements OnInit {
 
   async confirmResendEmail(email: string) {
     const alert = await this.alertController.create({
-      header: 'Email reenviado',
-      message: `Se ha enviado un nuevo enlace de verificación a ${email}`,
+      header: this.i18nService.translate('auth.verification.resendSuccessTitle'),
+      message: this.i18nService.translate('auth.verification.resendSuccessMessage', { email }),
       buttons: [
         {
-          text: 'Aceptar',
+          text: this.i18nService.translate('auth.verification.resendSuccessButton'),
           role: 'confirm',
         },
       ],
@@ -77,7 +80,7 @@ export class VerificationEmailComponent implements OnInit {
         console.log(error);
         this.continueButtonLoading = false;
         if (error.error == 'An error ocurred: El usuario está deshabilitado') {
-          this.errorMessage = 'The email was not confirmed'
+          this.errorMessage = this.i18nService.translate('auth.verification.emailNotConfirmed')
         } else {
           this.errorMessage = error.error
         }

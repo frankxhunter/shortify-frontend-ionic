@@ -6,13 +6,14 @@ import { ShortfyIconComponent } from "../../components/icons/shortfy-icon/shortf
 import { MenuProfileOptionsComponent } from "src/app/components/menu-bar/menu-profile-options/menu-profile-options.component";
 import { ShortCreatorComponent } from "src/app/components/links/short-creator/short-creator.component";
 import { LinkVisualizatorComponent } from "src/app/components/links/link-visualizator/link-visualizator.component";
+import { TranslatePipe } from 'src/app/pipes/translate.pipe';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [ IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, ShortfyIconComponent, MenuProfileOptionsComponent, ShortCreatorComponent, LinkVisualizatorComponent]
+  imports: [TranslatePipe, IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, ShortfyIconComponent, MenuProfileOptionsComponent, ShortCreatorComponent, LinkVisualizatorComponent]
 })
 export class HomePage implements OnInit {
 

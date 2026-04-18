@@ -3,12 +3,13 @@ import { IonCard, IonCardTitle, IonCardContent, IonIcon, IonCardSubtitle } from 
 import { LinkComponentComponent } from "../link-component/link-component.component";
 import { UrlStorageService } from 'src/app/services/url-manager/url-strategy/url-storage/url-storage-service';
 import { UrlManager } from 'src/app/services/url-manager/url-manager';
+import { TranslatePipe } from 'src/app/pipes/translate.pipe';
 
 @Component({
   selector: 'app-link-visualizator',
   templateUrl: './link-visualizator.component.html',
   styleUrls: ['./link-visualizator.component.scss'],
-  imports: [IonCardSubtitle, IonIcon, IonCardContent, IonCardTitle, IonCard, LinkComponentComponent],
+  imports: [TranslatePipe, IonCardSubtitle, IonIcon, IonCardContent, IonCardTitle, IonCard, LinkComponentComponent],
 })
 export class LinkVisualizatorComponent implements OnInit {
 

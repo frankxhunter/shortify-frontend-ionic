@@ -3,14 +3,14 @@
     <div class="qr-icon-wrapper">
       <ion-icon name="qr-code-outline"></ion-icon>
     </div>
-    <span class="modal-title">QR Code</span>
+    <span class="modal-title">{{ 'home.qrTitle' | translate }}</span>
     <ion-button (click)="dismiss()" fill="clear" class="close-btn">
       <ion-icon name="close-outline" slot="icon-only"></ion-icon>
     </ion-button>
   </div>
 
   <div class="modal-content">
-    <p class="url-label">Short URL</p>
+    <p class="url-label">{{ 'home.qrUrlLabel' | translate }}</p>
     <p class="url-text">{{ shortUrl }}</p>
 
     <div class="qr-container">
@@ -18,17 +18,17 @@
         <ion-spinner name="crescent"></ion-spinner>
       }
       @if(!isLoading && qrDataUrl){
-        <img [src]="qrDataUrl" alt="QR Code" />
+        <img [src]="qrDataUrl" [alt]="'home.qrImageAlt' | translate" />
       }
     </div>
 
     <div class="actions">
       <ion-button expand="block" fill="outline" color="medium" (click)="dismiss()">
-        Close
+        {{ 'home.close' | translate }}
       </ion-button>
       <ion-button expand="block" [disabled]="isLoading" (click)="downloadQR()">
         <ion-icon name="download-outline" slot="start"></ion-icon>
-        Download
+        {{ 'home.download' | translate }}
       </ion-button>
     </div>
   </div>
