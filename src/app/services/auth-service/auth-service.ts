@@ -1,60 +1,175 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, OnInit, signal } from '@angular/core';
-import { Observable, tap } from 'rxjs';
-import { GoogleAuthResponse, User } from 'src/app/Dtos/interfaces';
+import { inject, Injectable, signal } from '@angular/core';
+import {
+  Observable,
+  catchError,
+  defer,
+  finalize,
+  from,
+  map,
+  shareReplay,
+  switchMap,
+  throwError,
+  tap,
+} from 'rxjs';
+import {
+  AuthTokensResponse,
+  RefreshTokenRequest,
+  StoredAuthSession,
+  User,
+} from 'src/app/Dtos/interfaces';
 import { environment } from 'src/environments/environment';
-import { ApiService } from '../url-manager/url-strategy/api-service/api-service';
+import { AuthSessionStorageService } from './auth-session-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-
   private readonly baseUrl = environment.apiUrl;
+  private refreshRequest$: Observable<string> | null = null;
+  private sessionStorage = inject(AuthSessionStorageService);
 
-  private apiService = inject(ApiService)
+  userAuth = signal('');
 
-  constructor(private http: HttpClient) {
-   }
+  constructor(private http: HttpClient) {}
 
-  userAuth = signal('')
-
+  async init(): Promise<void> {
+    await this.sessionStorage.init();
+    this.userAuth.set(this.sessionStorage.session()?.email ?? '');
+  }
 
   register(body: User): Observable<string> {
-    return this.http.post(`${this.baseUrl}/register`, body, {
-      responseType: 'text'
+    return this.http.post(`${this.baseUrl}/api/auth/register`, body, {
+      responseType: 'text',
     });
   }
 
-  login(body: User): Observable<string> {
-    return this.http.post(`${this.baseUrl}/login`, body, {
-      responseType: 'text'
-    }).pipe(
-      tap(userAuth => this.userAuth.set(body.email))
-    );
+  login(body: User): Observable<AuthTokensResponse> {
+    return this.http
+      .post<AuthTokensResponse>(`${this.baseUrl}/api/auth/login`, body)
+      .pipe(switchMap((response) => this.persistSession(response)));
   }
 
   checkSession(): Observable<string> {
-    return this.http.get(`${this.baseUrl}/login`, {
-      responseType: 'text'
-    }).pipe(
-      tap(userAuth => this.userAuth.set(userAuth))
-    );
+    return this.http
+      .get(`${this.baseUrl}/api/auth/login`, {
+        responseType: 'text',
+      })
+      .pipe(tap((userAuth) => this.userAuth.set(userAuth)));
   }
 
-  googleAuth(body: string): Observable<GoogleAuthResponse> {
-    return this.http.post<GoogleAuthResponse>(`${this.baseUrl}/auth/google`, {
-      token: body
-    }).pipe(
-      tap(userAuth => this.userAuth.set(userAuth.email))
-    );
+  googleAuth(body: string): Observable<AuthTokensResponse> {
+    return this.http
+      .post<AuthTokensResponse>(`${this.baseUrl}/api/auth/google`, {
+        token: body,
+      })
+      .pipe(switchMap((response) => this.persistSession(response)));
   }
 
   logout(): Observable<string> {
-    return this.http.post(`${this.baseUrl}/auth/logout`, {}, {
-      responseType: 'text'
-    }).pipe(
-      tap(() => this.userAuth.set(''))
-    );
+    const refreshToken = this.getRefreshToken();
+
+    if (!refreshToken) {
+      return defer(() => from(this.clearSession()).pipe(map(() => '')));
+    }
+
+    const body: RefreshTokenRequest = { refreshToken };
+    return this.http
+      .post(`${this.baseUrl}/api/auth/logout`, body, {
+        responseType: 'text',
+      })
+      .pipe(
+        switchMap((response) =>
+          from(this.clearSession()).pipe(map(() => response)),
+        ),
+        catchError((error) =>
+          from(this.clearSession()).pipe(
+            switchMap(() => throwError(() => error)),
+          ),
+        ),
+      );
+  }
+
+  getAccessToken(): string {
+    return this.sessionStorage.session()?.token ?? '';
+  }
+
+  getRefreshToken(): string {
+    return this.sessionStorage.session()?.refreshToken ?? '';
+  }
+
+  shouldAttachToken(url: string): boolean {
+    if (!url.startsWith(this.baseUrl)) {
+      return false;
+    }
+
+    return ![
+      '/api/auth/register',
+      '/api/auth/google',
+      '/api/auth/refresh',
+      '/api/auth/confirm-email',
+    ].some((path) => url.includes(path));
+  }
+
+  shouldRefresh(url: string): boolean {
+    if (!url.startsWith(this.baseUrl)) {
+      return false;
+    }
+
+    return ![
+      '/api/auth/register',
+      '/api/auth/google',
+      '/api/auth/refresh',
+      '/api/auth/logout',
+      '/api/auth/confirm-email',
+    ].some((path) => url.includes(path));
+  }
+
+  refreshAccessToken(): Observable<string> {
+    const refreshToken = this.getRefreshToken();
+
+    if (!refreshToken) {
+      return throwError(() => new Error('No refresh token available'));
+    }
+
+    if (this.refreshRequest$) {
+      return this.refreshRequest$;
+    }
+
+    const body: RefreshTokenRequest = { refreshToken };
+    this.refreshRequest$ = this.http
+      .post<AuthTokensResponse>(`${this.baseUrl}/api/auth/refresh`, body)
+      .pipe(
+        switchMap((response) =>
+          from(this.storeSession(response)).pipe(map(() => response.token)),
+        ),
+        finalize(() => {
+          this.refreshRequest$ = null;
+        }),
+        shareReplay(1),
+      );
+
+    return this.refreshRequest$;
+  }
+
+  clearSession(): Promise<void> {
+    this.userAuth.set('');
+    return this.sessionStorage.clear();
+  }
+
+  private persistSession(
+    response: AuthTokensResponse,
+  ): Observable<AuthTokensResponse> {
+    return from(this.storeSession(response)).pipe(map(() => response));
+  }
+
+  private async storeSession(response: AuthTokensResponse): Promise<void> {
+    const session: StoredAuthSession = {
+      ...response,
+      storedAt: Date.now(),
+    };
+
+    await this.sessionStorage.setSession(session);
+    this.userAuth.set(response.email);
   }
 }

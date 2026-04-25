@@ -21,7 +21,7 @@ export class ApiService implements UrlInterface {
   constructor(private http: HttpClient) { }
 
   loadAll(): Observable<UrlItem[]> {
-    return this.http.get<UrlItem[]>(`${this.baseUrl}/urls`).pipe(
+    return this.http.get<UrlItem[]>(`${this.baseUrl}/api/urls`).pipe(
       map(urls => urls.map(u => this.addPrefixToUrl(u))),
       tap(urls => this._urls.set(urls))
     );
@@ -36,7 +36,7 @@ export class ApiService implements UrlInterface {
   }
 
   createUrl(body: CreateUrlRequest): Observable<UrlItem> {
-    return this.http.post<UrlItem>(`${this.baseUrl}/urls/create`, body).pipe(
+    return this.http.post<UrlItem>(`${this.baseUrl}/api/urls/create`, body).pipe(
       map(r => this.addPrefixToUrl(r)),
       tap(url => this._urls.update(list => [...list, url]))
     );

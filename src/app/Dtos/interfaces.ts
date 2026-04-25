@@ -24,19 +24,19 @@ export interface User {
   password: string;
 }
 
-export interface AuthResponse {
-  textResponse: string;
-}
-
-export interface SessionStatusResponse {
-  authenticated: boolean;
-  user?: {
-    id: number;
-    username: string;
-    email: string;
-  };
-}
-
-export interface GoogleAuthResponse {
+export interface AuthTokensResponse {
+  token: string;
+  refreshToken: string;
+  tokenType: string;
+  expiresInMs: number;
+  refreshExpiresInMs: number;
   email: string;
+}
+
+export interface StoredAuthSession extends AuthTokensResponse {
+  storedAt: number;
+}
+
+export interface RefreshTokenRequest {
+  refreshToken: string;
 }
