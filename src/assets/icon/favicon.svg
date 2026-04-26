@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="-60 -60 632 632">
+  
+  <!-- FONDO redondeado con padding -->
+  <rect x="-60" y="-60" width="632" height="632" rx="120" fill="#5b4cf0"/>
+  
+  <!-- ICONO -->
+  <path d="M208 352h-64a96 96 0 010-192h64M304 160h64a96 96 0 010 192h-64M163.29 256h187.42" 
+    fill="none" 
+    stroke="#ffffff"
+    stroke-linecap="round" 
+    stroke-linejoin="round" 
+    stroke-width="36"/>
+</svg>
