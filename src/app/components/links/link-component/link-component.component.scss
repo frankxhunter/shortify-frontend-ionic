@@ -48,17 +48,17 @@
     background: transparent;
     width: 100%;
     font-size: clamp(0.75rem, 2.5vw, 0.875rem);
-    color: #374151;
+    color: var(--input-text);
 }
 
 .search-input::placeholder {
-    color: #9ca3af;
+    color: var(--input-placeholder);
 }
 
 .container-name {
     display: inline-block;
     padding: clamp(2px, 0.5vw, 4px) clamp(6px, 1.5vw, 10px);
-    background-color: #ebe9ff;
+    background-color: var(--container-name-bg);
     color: var(--color-primary);
     border-radius: 12px;
     font-size: clamp(0.75rem, 2.5vw, 0.875rem);
@@ -165,7 +165,7 @@ ion-icon {
 }
 
 .delete-button:hover {
-    color: rgb(231, 55, 55);
+    color: var(--error-color);
 }
 
 @media (max-width: 768px) {

@@ -1,5 +1,5 @@
 .container_background {
-    background: linear-gradient(to right, #e1e6ff, #faf3fa);
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
     min-height: 92dvb;
     box-sizing: border-box;
     width: 100%;

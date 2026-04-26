@@ -59,6 +59,13 @@
   --color-text-gray: rgb(88, 88, 88);
   --color-text-gray-light: rgb(128, 127, 127);
   --color-secondary: #8b7cf6;
+  /* Status colors */
+  --error-color: #d32f2f;
+  --error-bg: #fef6f6;
+  --success-color: #10b981;
+  /* Toast */
+  --toast-bg-dark: #1e1e1e;
+  --toast-text: #ffffff;
 
   /* =========================
      ICONO
@@ -73,6 +80,10 @@
   --background-card: #ffffff;
   --background-input: #f3f4f6;
   --background-avatar: #e1e6ff;
+  /* Gradient colors */
+  --gradient-start: #e1e6ff;
+  --gradient-end: #faf3fa;
+  --container-name-bg: #ebe9ff;
 
   /* =========================
      TEXT COLORS
