@@ -28,7 +28,6 @@ export class LinkComponentComponent {
     );
   })
 
-  constructor() { }
 
   filteredLinks = computed(() => {
     const search = this.searchElement().toLowerCase().trim();

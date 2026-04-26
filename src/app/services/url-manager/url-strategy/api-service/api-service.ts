@@ -1,4 +1,4 @@
-import { Injectable, OnInit, signal, Signal } from '@angular/core';
+import { inject, Injectable, OnInit, signal, Signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { delay, map, Observable, tap } from 'rxjs';
 import {
@@ -7,6 +7,7 @@ import {
 } from '../../../../Dtos/interfaces';
 import { environment } from 'src/environments/environment';
 import { UrlInterface } from '../url-strategy';
+import { WebSocketService } from 'src/app/services/web-socket/web-socket-service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,8 @@ import { UrlInterface } from '../url-strategy';
 export class ApiService implements UrlInterface {
 
   private readonly baseUrl = environment.apiUrl;
+
+  private webSocketService = inject(WebSocketService)
 
   private _urls = signal<UrlItem[]>([]);
   readonly urls = this._urls.asReadonly();
@@ -23,7 +26,13 @@ export class ApiService implements UrlInterface {
   loadAll(): Observable<UrlItem[]> {
     return this.http.get<UrlItem[]>(`${this.baseUrl}/api/urls`).pipe(
       map(urls => urls.map(u => this.addPrefixToUrl(u))),
-      tap(urls => this._urls.set(urls))
+      tap(urls => this._urls.set(urls)),
+      tap(urls => urls.forEach((url)=>{
+        this.webSocketService.subcribeToClickCounter(url.id).subscribe(value =>{
+          console.log('Recibiendo valor: ' + value);
+          url.clickCounter = value
+        })
+      }))
     );
   }
 
