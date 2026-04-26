@@ -27,9 +27,8 @@ export class ApiService implements UrlInterface {
     return this.http.get<UrlItem[]>(`${this.baseUrl}/api/urls`).pipe(
       map(urls => urls.map(u => this.addPrefixToUrl(u))),
       tap(urls => this._urls.set(urls)),
-      tap(urls => urls.forEach((url)=>{
-        this.webSocketService.subcribeToClickCounter(url.id).subscribe(value =>{
-          console.log('Recibiendo valor: ' + value);
+      tap(urls => urls.forEach((url) => {
+        this.webSocketService.subcribeToClickCounter(url.id).subscribe(value => {
           url.clickCounter = value
         })
       }))
@@ -37,7 +36,12 @@ export class ApiService implements UrlInterface {
   }
 
   add(url: CreateUrlRequest): Observable<UrlItem> {
-    return this.createUrl(url);
+    return this.createUrl(url).pipe(
+      tap(url => {
+        this.webSocketService.subcribeToClickCounter(url.id).subscribe(value => {
+          url.clickCounter = value
+        })
+      }))
   }
 
   remove(id: number): void {
