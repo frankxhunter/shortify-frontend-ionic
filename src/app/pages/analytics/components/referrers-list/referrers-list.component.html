@@ -1,0 +1,23 @@
+<ion-card class="list-card">
+  <ion-card-title class="chart-title">{{ 'analytics.topReferrers' | translate }}</ion-card-title>
+  @if (referrers.length === 0) {
+    <div class="no-data">{{ 'analytics.noData' | translate }}</div>
+  } @else {
+    <div class="list-container">
+      @for (referrer of referrers; track referrer.referrer) {
+        <div class="list-item">
+          <div class="referrer-info">
+            <ion-icon name="link-outline" class="referrer-icon"></ion-icon>
+            <span class="name">{{ getReferrerLabel(referrer.referrer) }}</span>
+          </div>
+          <div class="stats">
+            <div class="bar-container">
+              <div class="bar" [style.width.%]="referrer.percentage"></div>
+            </div>
+            <span class="percentage">{{ referrer.percentage.toFixed(1) }}%</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</ion-card>

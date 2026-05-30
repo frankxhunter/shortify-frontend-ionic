@@ -1,0 +1,31 @@
+<div class="summary-cards">
+  <div class="card total-clicks">
+    <ion-icon name="flash-outline"></ion-icon>
+    <div class="card-content">
+      <div class="card-value">{{ formatNumber(analytics.totalClicks) }}</div>
+      <div class="card-label">{{ 'analytics.totalClicks' | translate }}</div>
+    </div>
+  </div>
+
+  <div class="card unique-clicks">
+    <ion-icon name="people-outline"></ion-icon>
+    <div class="card-content">
+      <div class="card-value">{{ formatNumber(analytics.uniqueClicks) }}</div>
+      <div class="card-label">{{ 'analytics.uniqueClicks' | translate }}</div>
+    </div>
+  </div>
+
+  <div class="card last-clicked">
+    <ion-icon name="time-outline"></ion-icon>
+    <div class="card-content">
+      <div class="card-value">
+        @if (analytics.lastClickedAt) {
+          {{ formatLastClicked(analytics.lastClickedAt) }}
+        } @else {
+          {{ 'analytics.neverClicked' | translate }}
+        }
+      </div>
+      <div class="card-label">{{ 'analytics.lastClicked' | translate }}</div>
+    </div>
+  </div>
+</div>

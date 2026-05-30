@@ -40,3 +40,55 @@ export interface StoredAuthSession extends AuthTokensResponse {
 export interface RefreshTokenRequest {
   refreshToken: string;
 }
+
+export type AnalyticsRange = '7d' | '30d' | '90d' | 'all';
+
+export interface TimeSeriesPoint {
+  date: string;
+  clicks: number;
+}
+
+export interface CountryStat {
+  country: string;
+  countryCode: string;
+  clicks: number;
+  percentage: number;
+}
+
+export interface ReferrerStat {
+  referrer: string;
+  clicks: number;
+  percentage: number;
+}
+
+export interface DeviceStat {
+  name: string;
+  clicks: number;
+  percentage: number;
+}
+
+export interface BrowserStat {
+  name: string;
+  clicks: number;
+  percentage: number;
+}
+
+export interface OsStat {
+  name: string;
+  clicks: number;
+  percentage: number;
+}
+
+export interface UrlAnalytics {
+  urlId: number;
+  totalClicks: number;
+  uniqueClicks: number;
+  lastClickedAt: string | null;
+  clicksOverTime: TimeSeriesPoint[];
+  topCountries: CountryStat[];
+  topReferrers: ReferrerStat[];
+  topBrowsers: BrowserStat[];
+  topOs: OsStat[];
+  deviceSplit: { mobile: number; desktop: number; tablet: number };
+  hourlyHeatmap: number[];
+}

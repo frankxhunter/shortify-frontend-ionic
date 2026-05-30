@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      @if (linkName) {
+        {{ linkName }}
+      } @else {
+        {{ 'analytics.title' | translate }}
+      }
+    </ion-title>
+    <ion-buttons slot="end">
+      @if (useMock) {
+        <div class="mock-badge">MOCK</div>
+      }
+      <app-range-selector [selectedRange]="selectedRange()" (rangeChange)="onRangeChange($event)"></app-range-selector>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="analytics-content">
+  @if (analyticsService.isLoading()) {
+    <div class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  } @else if (analyticsService.hasError()) {
+    <div class="error-container">
+      <ion-icon name="alert-circle-outline" class="error-icon"></ion-icon>
+      <div class="error-message">{{ analyticsService.hasError() }}</div>
+      <ion-button fill="outline" (click)="loadAnalytics()">{{ 'analytics.retry' | translate }}</ion-button>
+    </div>
+  } @else if (!analytics) {
+    <div class="no-data-container">
+      <ion-icon name="bar-chart-outline" class="no-data-icon"></ion-icon>
+      <div class="no-data-title">{{ 'analytics.noDataTitle' | translate }}</div>
+      <div class="no-data-subtitle">{{ 'analytics.noDataSubtitle' | translate }}</div>
+      <ion-button fill="solid" (click)="goBack()">{{ 'analytics.back' | translate }}</ion-button>
+    </div>
+  } @else {
+    <div class="dashboard">
+      <app-summary-cards [analytics]="analytics"></app-summary-cards>
+
+      <app-clicks-chart [clicksOverTime]="analytics.clicksOverTime"></app-clicks-chart>
+
+      <div class="two-column-grid">
+        <app-device-chart [deviceSplit]="analytics.deviceSplit"></app-device-chart>
+        <app-hourly-heatmap [hourlyHeatmap]="analytics.hourlyHeatmap"></app-hourly-heatmap>
+      </div>
+
+      <div class="two-column-grid">
+        <app-countries-list [countries]="analytics.topCountries"></app-countries-list>
+        <app-referrers-list [referrers]="analytics.topReferrers"></app-referrers-list>
+      </div>
+
+      <div class="two-column-grid">
+        <app-browsers-chart [browsers]="analytics.topBrowsers"></app-browsers-chart>
+        <app-os-chart [osList]="analytics.topOs"></app-os-chart>
+      </div>
+    </div>
+  }
+</ion-content>

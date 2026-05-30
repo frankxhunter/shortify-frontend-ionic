@@ -1,0 +1,7 @@
+<ion-segment [value]="selectedRange" (ionChange)="onRangeChanged($event)" class="range-segment">
+  @for (range of ranges; track range.value) {
+    <ion-segment-button [value]="range.value">
+      {{ range.label }}
+    </ion-segment-button>
+  }
+</ion-segment>
