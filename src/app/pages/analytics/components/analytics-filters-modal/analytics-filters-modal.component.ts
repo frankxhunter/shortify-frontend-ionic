@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { IonButton, IonButtons, IonChip, IonContent, IonHeader, IonIcon, IonModal, IonSearchbar, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonModal, IonSearchbar, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { TranslatePipe } from 'src/app/pipes/translate.pipe';
 
 export interface AnalyticsFiltersState {
@@ -31,7 +31,6 @@ export interface CountryFilterOption {
     IonSearchbar,
     IonTitle,
     IonModal,
-    IonChip,
     TranslatePipe,
   ],
 })

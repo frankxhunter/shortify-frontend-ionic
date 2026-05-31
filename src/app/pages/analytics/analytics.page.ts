@@ -8,7 +8,7 @@ import { SummaryCardsComponent } from './components/summary-cards/summary-cards.
 import { ClicksChartComponent } from './components/clicks-chart/clicks-chart.component';
 import { DeviceChartComponent } from './components/device-chart/device-chart.component';
 import { CountriesListComponent } from './components/countries-list/countries-list.component';
-import { ReferrersListComponent } from './components/referrers-list/referrers-list.component';
+
 import { BrowsersChartComponent } from './components/browsers-chart/browsers-chart.component';
 import { OsChartComponent } from './components/os-chart/os-chart.component';
 import { HourlyHeatmapComponent } from './components/hourly-heatmap/hourly-heatmap.component';
@@ -42,7 +42,6 @@ type NamedStat = { name: string; clicks: number; percentage: number };
     ClicksChartComponent,
     DeviceChartComponent,
     CountriesListComponent,
-    ReferrersListComponent,
     BrowsersChartComponent,
     OsChartComponent,
     HourlyHeatmapComponent,

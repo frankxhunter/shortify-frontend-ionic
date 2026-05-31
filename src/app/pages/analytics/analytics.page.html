@@ -93,11 +93,10 @@
 
         <div class="two-column-grid">
           <app-countries-list [countries]="visibleAnalytics.topCountries"></app-countries-list>
-          <app-referrers-list [referrers]="visibleAnalytics.topReferrers"></app-referrers-list>
+          <app-browsers-chart [browsers]="visibleAnalytics.topBrowsers"></app-browsers-chart>
         </div>
 
         <div class="two-column-grid">
-          <app-browsers-chart [browsers]="visibleAnalytics.topBrowsers"></app-browsers-chart>
           <app-os-chart [osList]="visibleAnalytics.topOs"></app-os-chart>
         </div>
 
