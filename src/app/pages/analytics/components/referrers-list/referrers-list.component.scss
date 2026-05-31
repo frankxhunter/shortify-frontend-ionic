@@ -5,6 +5,7 @@
   border-radius: var(--radius-medium);
   box-shadow: var(--shadow-small);
   background: var(--background-card);
+  overflow: hidden;
 }
 
 .chart-title {
@@ -83,4 +84,29 @@
   color: var(--text-muted);
   min-width: 40px;
   text-align: right;
+}
+
+@media (max-width: 600px) {
+  .list-card {
+    padding: var(--spacing-sm);
+  }
+
+  .chart-title {
+    font-size: var(--font-size-sm);
+  }
+
+  .list-container {
+    max-height: 240px;
+    gap: var(--space-sm);
+  }
+
+  .name {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
+
+  .stats {
+    gap: var(--space-sm);
+  }
 }

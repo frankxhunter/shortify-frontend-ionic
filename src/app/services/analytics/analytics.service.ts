@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { Observable, defer, of, catchError, throwError, delay, finalize } from 'rxjs';
+import { Observable, defer, of, catchError, throwError, delay, finalize, tap } from 'rxjs';
 import { AnalyticsRange, UrlAnalytics } from 'src/app/Dtos/interfaces';
 import { environment } from 'src/environments/environment';
 import { getMockAnalytics } from './analytics-mock-data';
@@ -23,6 +23,7 @@ export class AnalyticsService {
     const cacheKey = `${urlId}-${range}`;
 
     if (this.cache.has(cacheKey)) {
+      this.error.set(null);
       return of(this.cache.get(cacheKey)!);
     }
 
@@ -37,6 +38,7 @@ export class AnalyticsService {
         })();
 
     return stream$.pipe(
+      tap(data => this.cache.set(cacheKey, data)),
       catchError(err => {
         this.error.set(err?.error?.message || err?.message || 'Failed to load analytics');
         return throwError(() => err);

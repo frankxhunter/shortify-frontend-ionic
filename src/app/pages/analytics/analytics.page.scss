@@ -55,6 +55,25 @@
   gap: var(--spacing-md);
 }
 
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+ion-toolbar {
+  --min-height: 56px;
+}
+
+ion-toolbar ion-title {
+  padding-inline: 0;
+}
+
+ion-toolbar ion-title,
+ion-toolbar .toolbar-actions {
+  min-width: 0;
+}
+
 .two-column-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -76,5 +95,167 @@
   letter-spacing: 1px;
   padding: 4px 10px;
   border-radius: 4px;
-  margin-right: 8px;
+}
+
+.search-dock {
+  display: grid;
+  gap: var(--space-sm);
+  padding: var(--spacing-md);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(135deg, rgba(91, 76, 240, 0.12), transparent 45%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 244, 251, 0.95));
+  box-shadow: var(--shadow-small);
+}
+
+.search-dock-copy {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.eyebrow {
+  color: var(--color-primary);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.search-dock-copy h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: clamp(1rem, 2.4vw, 1.4rem);
+  font-weight: 800;
+}
+
+.search-dock-copy p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+.search-dock-actions {
+  display: grid;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.search-bar-shell {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-bar-shell.has-active-filters::after {
+  content: '';
+  position: absolute;
+  right: 52px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(91, 76, 240, 0.12);
+  pointer-events: none;
+}
+
+.global-search {
+  width: 100%;
+  padding: 0;
+  --background: var(--background-card);
+  --box-shadow: none;
+  --border-radius: 18px;
+  --padding-start: 14px;
+  --padding-end: 56px;
+  --color: var(--text-primary);
+}
+
+.filters-button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --border-radius: 999px;
+  --background: rgba(91, 76, 240, 1);
+  --background-activated: rgba(91, 76, 240, 1);
+  --color: var(--color-primary);
+  margin: 0;
+  z-index: 2;
+  box-shadow: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.filters-button ion-icon {
+  font-size: 18px;
+}
+
+.filters-button.is-active {
+  --background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  --background-activated: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  --color: var(--text-white);
+  box-shadow: 0 10px 20px rgba(91, 76, 240, 0.18);
+}
+
+.filters-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.filters-chip {
+  margin: 0;
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.filters-clear {
+  color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  .search-dock {
+    padding: var(--spacing-sm);
+  }
+}
+
+@media (max-width: 600px) {
+  ion-toolbar {
+    --padding-top: 6px;
+    --padding-bottom: 6px;
+  }
+
+  ion-toolbar ion-title {
+    font-size: var(--font-size-md);
+  }
+
+  .toolbar-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .search-bar-shell.has-active-filters::after {
+    right: 48px;
+  }
+
+  .filters-button {
+    width: 34px;
+    height: 34px;
+    right: 7px;
+  }
 }

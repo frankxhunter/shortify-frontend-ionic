@@ -20,7 +20,7 @@ export class RangeSelectorComponent {
     { value: 'all', label: 'ALL' },
   ];
 
-  onRangeChanged(event: any) {
-    this.rangeChange.emit(event.detail.value);
+  onRangeChanged(event: CustomEvent) {
+    this.rangeChange.emit(event.detail.value as AnalyticsRange);
   }
 }

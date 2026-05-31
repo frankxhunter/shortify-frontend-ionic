@@ -92,3 +92,17 @@ export interface UrlAnalytics {
   deviceSplit: { mobile: number; desktop: number; tablet: number };
   hourlyHeatmap: number[];
 }
+
+export interface ClickHistoryEntry {
+  id: string;
+  clickedAt: string;
+  ip: string;
+  country: string;
+  countryCode: string;
+  referrer: string;
+  referrerLabel: string;
+  device: string;
+  browser: string;
+  os: string;
+  path: string;
+}

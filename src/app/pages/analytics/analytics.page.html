@@ -12,11 +12,10 @@
         {{ 'analytics.title' | translate }}
       }
     </ion-title>
-    <ion-buttons slot="end">
+    <ion-buttons class="toolbar-actions" slot="end">
       @if (useMock) {
         <div class="mock-badge">MOCK</div>
       }
-      <app-range-selector [selectedRange]="selectedRange()" (rangeChange)="onRangeChange($event)"></app-range-selector>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -40,25 +39,82 @@
       <ion-button fill="solid" (click)="goBack()">{{ 'analytics.back' | translate }}</ion-button>
     </div>
   } @else {
-    <div class="dashboard">
-      <app-summary-cards [analytics]="analytics"></app-summary-cards>
+    @if (visibleAnalytics) {
+      <div class="dashboard">
+        <section class="search-dock">
+          <div class="search-dock-copy">
+            <div class="eyebrow">{{ 'analytics.filtersTitle' | translate }}</div>
+            <h2>{{ 'analytics.filtersHeadline' | translate }}</h2>
+          </div>
 
-      <app-clicks-chart [clicksOverTime]="analytics.clicksOverTime"></app-clicks-chart>
+          <div class="search-dock-actions">
+            <div class="search-bar-shell" [class.has-active-filters]="hasActiveFilters">
+              <ion-searchbar
+                class="global-search"
+                [value]="searchTerm"
+                [placeholder]="'analytics.searchAnalytics' | translate"
+                (ionInput)="onSearchChange($event)"
+              ></ion-searchbar>
 
-      <div class="two-column-grid">
-        <app-device-chart [deviceSplit]="analytics.deviceSplit"></app-device-chart>
-        <app-hourly-heatmap [hourlyHeatmap]="analytics.hourlyHeatmap"></app-hourly-heatmap>
+              <ion-button
+                class="filters-button"
+                fill="solid"
+                size="small"
+                [class.is-active]="hasActiveFilters"
+                [attr.aria-label]="'analytics.filtersTitle' | translate"
+                [attr.title]="'analytics.filtersTitle' | translate"
+                (click)="openFiltersModal()"
+              >
+                <ion-icon name="funnel-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+
+          <div class="filters-summary">
+            <ion-chip class="filters-chip" [outline]="true">
+              {{ visibleClickHistory.length }} / {{ clickHistory.length }} {{ 'analytics.clickHistoryVisible' | translate }}
+            </ion-chip>
+            @if (hasActiveFilters) {
+              <ion-chip class="filters-chip filters-clear" [outline]="true" (click)="resetFilters()">
+                {{ 'analytics.clearFilters' | translate }}
+              </ion-chip>
+            }
+          </div>
+        </section>
+
+        <app-summary-cards [analytics]="visibleAnalytics"></app-summary-cards>
+
+        <app-clicks-chart [clicksOverTime]="visibleAnalytics.clicksOverTime"></app-clicks-chart>
+
+        <div class="two-column-grid">
+          <app-device-chart [deviceSplit]="visibleAnalytics.deviceSplit"></app-device-chart>
+          <app-hourly-heatmap [hourlyHeatmap]="visibleAnalytics.hourlyHeatmap"></app-hourly-heatmap>
+        </div>
+
+        <div class="two-column-grid">
+          <app-countries-list [countries]="visibleAnalytics.topCountries"></app-countries-list>
+          <app-referrers-list [referrers]="visibleAnalytics.topReferrers"></app-referrers-list>
+        </div>
+
+        <div class="two-column-grid">
+          <app-browsers-chart [browsers]="visibleAnalytics.topBrowsers"></app-browsers-chart>
+          <app-os-chart [osList]="visibleAnalytics.topOs"></app-os-chart>
+        </div>
+
+        <app-click-history-panel [entries]="visibleClickHistory" [mockMode]="useMock" [hasActiveFilters]="hasActiveFilters"></app-click-history-panel>
       </div>
-
-      <div class="two-column-grid">
-        <app-countries-list [countries]="analytics.topCountries"></app-countries-list>
-        <app-referrers-list [referrers]="analytics.topReferrers"></app-referrers-list>
-      </div>
-
-      <div class="two-column-grid">
-        <app-browsers-chart [browsers]="analytics.topBrowsers"></app-browsers-chart>
-        <app-os-chart [osList]="analytics.topOs"></app-os-chart>
-      </div>
-    </div>
+    }
   }
+
+  <app-analytics-filters-modal
+    [isOpen]="filtersModalOpen"
+    [state]="filtersState"
+    [countryOptions]="countryOptions"
+    [hasActiveFilters]="hasActiveFilters"
+    [filteredCount]="visibleClickHistory.length"
+    [totalCount]="clickHistory.length"
+    (isOpenChange)="onFiltersDismissed($event)"
+    (applied)="onFiltersApplied($event)"
+    (reset)="resetFilters()"
+  ></app-analytics-filters-modal>
 </ion-content>
