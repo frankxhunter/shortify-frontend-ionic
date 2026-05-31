@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { TimeSeriesPoint } from 'src/app/Dtos/interfaces';
 import { TranslatePipe } from 'src/app/pipes/translate.pipe';
@@ -11,10 +11,16 @@ import { IonCard, IonCardTitle } from '@ionic/angular/standalone';
   standalone: true,
   imports: [NgApexchartsModule, TranslatePipe, IonCard, IonCardTitle],
 })
-export class ClicksChartComponent implements OnInit, OnChanges {
+export class ClicksChartComponent implements OnInit, OnChanges, AfterViewChecked {
   @Input({ required: true }) clicksOverTime: TimeSeriesPoint[] = [];
+  @ViewChild('scrollWrapper') scrollWrapper!: ElementRef<HTMLDivElement>;
 
   chartOptions: any;
+  chartWidth: string = '100%';
+
+  private readonly MIN_POINTS_FOR_SCROLL = 7;
+  private readonly PX_PER_POINT = 60;
+  private shouldScroll = false;
 
   ngOnInit() {
     this.initChart();
@@ -22,13 +28,33 @@ export class ClicksChartComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.initChart();
+    this.shouldScroll = true; // marca que hay que hacer scroll al próximo check
+  }
+
+  ngAfterViewChecked() {
+    if (this.shouldScroll && this.scrollWrapper?.nativeElement) {
+      this.scrollWrapper.nativeElement.scrollLeft = this.scrollWrapper.nativeElement.scrollWidth;
+      console.log("hola");
+      this.shouldScroll = false;
+    }
+  }
+
+  get needsScroll(): boolean {
+    return this.clicksOverTime.length > this.MIN_POINTS_FOR_SCROLL;
   }
 
   private initChart() {
+    const count = this.clicksOverTime.length;
+
+    this.chartWidth = this.needsScroll
+      ? `${count * this.PX_PER_POINT}px`
+      : '100%';
+
     const labels = this.clicksOverTime.map(p => {
       const date = new Date(p.date);
       return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
     });
+
     const data = this.clicksOverTime.map(p => p.clicks);
 
     this.chartOptions = {
@@ -36,6 +62,7 @@ export class ClicksChartComponent implements OnInit, OnChanges {
       chart: {
         type: 'area',
         height: 250,
+        width: this.chartWidth,
         toolbar: { show: false },
         zoom: { enabled: false },
         background: 'transparent',
@@ -55,7 +82,10 @@ export class ClicksChartComponent implements OnInit, OnChanges {
       xaxis: {
         categories: labels,
         labels: {
-          rotate: -45,
+          rotate: count > 5 ? -45 : 0,
+          rotateAlways: count > 5,
+          hideOverlappingLabels: false,
+          trim: false,
           style: { fontSize: '11px', colors: '#9ca3af' },
         },
         tooltip: { enabled: false },

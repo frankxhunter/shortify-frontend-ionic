@@ -15,6 +15,34 @@
   margin-bottom: var(--spacing-sm);
 }
 
+.chart-scroll-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch; // scroll suave en iOS
+
+  // Ocultar scrollbar visualmente pero mantener funcionalidad
+  scrollbar-width: thin;
+  scrollbar-color: var(--card-border) transparent;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--card-border);
+    border-radius: 2px;
+  }
+}
+
+.chart-inner {
+  // El ancho mínimo lo fija el componente vía [style.minWidth]
+  min-width: 100%;
+}
+
 .no-data {
   display: flex;
   align-items: center;
