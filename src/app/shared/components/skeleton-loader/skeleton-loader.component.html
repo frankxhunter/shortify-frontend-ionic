@@ -1,0 +1,8 @@
+<ng-container *ngFor="let _ of [].constructor(rows)">
+  <div
+    class="skeleton"
+    [class.circle]="circle"
+    [style.width]="width"
+    [style.height]="height"
+  ></div>
+</ng-container>

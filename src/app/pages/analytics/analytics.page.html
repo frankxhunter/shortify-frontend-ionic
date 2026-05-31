@@ -21,9 +21,47 @@
 </ion-header>
 
 <ion-content class="analytics-content">
-  @if (analyticsService.isLoading()) {
-    <div class="loading-container">
-      <ion-spinner name="crescent"></ion-spinner>
+  @if (showSkeleton) {
+    <div class="skeleton-dashboard">
+      <section class="search-dock">
+        <div class="search-dock-copy">
+          <div class="eyebrow"><app-skeleton-loader width="80px" height="12px"></app-skeleton-loader></div>
+          <h2><app-skeleton-loader width="200px" height="20px"></app-skeleton-loader></h2>
+        </div>
+
+        <div class="search-dock-actions">
+          <div class="search-bar-shell">
+            <app-skeleton-loader width="240px" height="36px"></app-skeleton-loader>
+            <app-skeleton-loader width="40px" height="36px" style="margin-left:8px" [circle]="true"></app-skeleton-loader>
+          </div>
+        </div>
+      </section>
+
+      <div class="summary-cards-skeleton">
+        <app-skeleton-loader [rows]="3" height="72px"></app-skeleton-loader>
+      </div>
+
+      <div class="chart-skeleton">
+        <app-skeleton-loader height="260px"></app-skeleton-loader>
+      </div>
+
+      <div class="two-column-grid">
+        <app-skeleton-loader height="180px"></app-skeleton-loader>
+        <app-skeleton-loader height="180px"></app-skeleton-loader>
+      </div>
+
+      <div class="two-column-grid">
+        <app-skeleton-loader height="180px"></app-skeleton-loader>
+        <app-skeleton-loader height="180px"></app-skeleton-loader>
+      </div>
+
+      <div class="two-column-grid">
+        <app-skeleton-loader height="120px"></app-skeleton-loader>
+      </div>
+
+      <div class="click-history-skeleton">
+        <app-skeleton-loader [rows]="6" height="42px"></app-skeleton-loader>
+      </div>
     </div>
   } @else if (analyticsService.hasError()) {
     <div class="error-container">

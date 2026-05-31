@@ -14,6 +14,7 @@ import { OsChartComponent } from './components/os-chart/os-chart.component';
 import { HourlyHeatmapComponent } from './components/hourly-heatmap/hourly-heatmap.component';
 import { ClickHistoryPanelComponent } from './components/click-history-panel/click-history-panel.component';
 import { AnalyticsFiltersModalComponent, AnalyticsFiltersState, CountryFilterOption } from './components/analytics-filters-modal/analytics-filters-modal.component';
+import { SkeletonLoaderComponent } from 'src/app/shared/components/skeleton-loader/skeleton-loader.component';
 import { TranslatePipe } from 'src/app/pipes/translate.pipe';
 import { ClickHistoryEntry, CountryStat, ReferrerStat, TimeSeriesPoint, UrlAnalytics } from 'src/app/Dtos/interfaces';
 import { environment } from 'src/environments/environment';
@@ -47,6 +48,10 @@ type NamedStat = { name: string; clicks: number; percentage: number };
     HourlyHeatmapComponent,
     ClickHistoryPanelComponent,
     AnalyticsFiltersModalComponent,
+    SkeletonLoaderComponent,
+    // skeleton loader
+    // Note: as a standalone component project uses, we add our shared skeleton loader here
+    // The actual file is part of the repo under shared/components
   ],
 })
 export class AnalyticsPage implements OnInit {
@@ -74,6 +79,10 @@ export class AnalyticsPage implements OnInit {
     countryFilter: 'all',
   };
 
+  // local flag to show skeleton placeholders for at least 2 seconds
+  showSkeleton = false;
+  private skeletonTimer: any = null;
+
   ngOnInit() {
     const idParam = this.route.snapshot.paramMap.get('urlId');
     if (idParam) {
@@ -88,6 +97,15 @@ export class AnalyticsPage implements OnInit {
     this.clickHistory = [];
     this.visibleClickHistory = [];
     this.visibleAnalytics = null;
+    // show skeleton placeholders for a minimum of 2 seconds
+    this.showSkeleton = true;
+    if (this.skeletonTimer) {
+      clearTimeout(this.skeletonTimer);
+    }
+    this.skeletonTimer = setTimeout(() => {
+      this.showSkeleton = false;
+      this.skeletonTimer = null;
+    }, 2000);
     this.analyticsService.getAnalytics(this.urlId, 'all').subscribe({
       next: (data) => {
         this.analytics = data;
@@ -99,12 +117,20 @@ export class AnalyticsPage implements OnInit {
           this.linkName = url.name || url.shortUrl;
           this.linkShortUrl = url.shortUrl;
         }
+        // if data arrives after 2s, visible content will already be shown; if it arrives earlier
+        // the skeleton will still be visible until the timer completes
       },
       error: () => {
         this.analytics = null;
         this.visibleAnalytics = null;
         this.clickHistory = [];
         this.visibleClickHistory = [];
+        // hide skeleton if there was an error and the timer is still pending
+        if (this.skeletonTimer) {
+          clearTimeout(this.skeletonTimer);
+          this.skeletonTimer = null;
+        }
+        this.showSkeleton = false;
       },
     });
   }
