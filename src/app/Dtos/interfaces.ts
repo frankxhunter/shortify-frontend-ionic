@@ -19,6 +19,15 @@ export interface UrlRequest {
   accessedAt: string;
 }
 
+export interface UrlAccessRequest {
+  id: number;
+  ip: string;
+  browser: string;
+  os: string;
+  architecture: string;
+  date: string;
+}
+
 export interface User {
   email: string;
   password: string;

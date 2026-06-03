@@ -146,7 +146,6 @@ export const en = {
     clickHistoryEmptyTitle: 'No events yet',
     clickHistoryEmptyText: 'When clicks arrive, they will appear here as a detailed timeline.',
     filtersTitle: 'Global filters',
-    filtersHeadline: 'Search and narrow the entire analytics view',
     filtersSubtitle: 'Charts, metrics, and history all update from the same filtered click set.',
     searchAnalytics: 'Search analytics',
     timeRange: 'Date range',

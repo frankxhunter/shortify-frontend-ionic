@@ -63,18 +63,12 @@
         <app-skeleton-loader [rows]="6" height="42px"></app-skeleton-loader>
       </div>
     </div>
-  } @else if (analyticsService.hasError()) {
-    <div class="error-container">
-      <ion-icon name="alert-circle-outline" class="error-icon"></ion-icon>
-      <div class="error-message">{{ analyticsService.hasError() }}</div>
-      <ion-button fill="outline" (click)="loadAnalytics()">{{ 'analytics.retry' | translate }}</ion-button>
-    </div>
   } @else if (!analytics) {
     <div class="no-data-container">
       <ion-icon name="bar-chart-outline" class="no-data-icon"></ion-icon>
       <div class="no-data-title">{{ 'analytics.noDataTitle' | translate }}</div>
       <div class="no-data-subtitle">{{ 'analytics.noDataSubtitle' | translate }}</div>
-      <ion-button fill="solid" (click)="goBack()">{{ 'analytics.back' | translate }}</ion-button>
+      <ion-button fill="solid" (click)="loadAnalytics()">{{ 'analytics.retry' | translate }}</ion-button>
     </div>
   } @else {
     @if (visibleAnalytics) {
@@ -82,7 +76,6 @@
         <section class="search-dock">
           <div class="search-dock-copy">
             <div class="eyebrow">{{ 'analytics.filtersTitle' | translate }}</div>
-            <h2>{{ 'analytics.filtersHeadline' | translate }}</h2>
           </div>
 
           <div class="search-dock-actions">

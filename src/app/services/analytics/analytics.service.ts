@@ -1,7 +1,7 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
-import { Observable, defer, of, catchError, throwError, delay, finalize, tap } from 'rxjs';
-import { AnalyticsRange, UrlAnalytics } from 'src/app/Dtos/interfaces';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { UrlAccessRequest, UrlAnalytics } from 'src/app/Dtos/interfaces';
 import { environment } from 'src/environments/environment';
 import { getMockAnalytics } from './analytics-mock-data';
 
@@ -12,47 +12,115 @@ export class AnalyticsService {
   private readonly baseUrl = environment.apiUrl;
   private http = inject(HttpClient);
 
-  private cache = new Map<string, UrlAnalytics>();
-  private loading = signal(false);
-  private error = signal<string | null>(null);
-
-  readonly isLoading = this.loading.asReadonly();
-  readonly hasError = this.error.asReadonly();
-
-  getAnalytics(urlId: number, range: AnalyticsRange = '7d'): Observable<UrlAnalytics> {
-    const cacheKey = `${urlId}-${range}`;
-
-    if (this.cache.has(cacheKey)) {
-      this.error.set(null);
-      return of(this.cache.get(cacheKey)!);
+  getRequests(urlId: number): Observable<UrlAccessRequest[]> {
+    if (environment.useMockAnalytics) {
+      return of([]);
     }
-
-    this.loading.set(true);
-    this.error.set(null);
-
-    const stream$: Observable<UrlAnalytics> = environment.useMockAnalytics
-      ? defer(() => of(getMockAnalytics(urlId, range))).pipe(delay(600))
-      : (() => {
-          const params = new HttpParams().set('range', range);
-          return this.http.get<UrlAnalytics>(`${this.baseUrl}/api/urls/${urlId}/analytics`, { params });
-        })();
-
-    return stream$.pipe(
-      tap(data => this.cache.set(cacheKey, data)),
-      catchError(err => {
-        this.error.set(err?.error?.message || err?.message || 'Failed to load analytics');
-        return throwError(() => err);
-      }),
-      finalize(() => this.loading.set(false))
-    );
+    return this.http.get<UrlAccessRequest[]>(`${this.baseUrl}/api/urls/${urlId}/requests`);
   }
 
-  clearCache(urlId?: number): void {
-    if (urlId !== undefined) {
-      const keys = Array.from(this.cache.keys()).filter(k => k.startsWith(`${urlId}-`));
-      keys.forEach(k => this.cache.delete(k));
-    } else {
-      this.cache.clear();
+  mapRequestsToClickHistory(reqs: UrlAccessRequest[]) {
+    return reqs.map(r => ({
+      id: String(r.id),
+      clickedAt: r.date,
+      ip: r.ip ?? '',
+      country: 'Unknown',
+      countryCode: '--',
+      referrer: '',
+      referrerLabel: 'Direct',
+      device: this.inferDeviceFrom(r.architecture, r.os),
+      browser: r.browser ?? 'Unknown',
+      os: r.os ?? 'Unknown',
+      path: '',
+    }));
+  }
+
+  buildAnalyticsFromRequests(requests: UrlAccessRequest[], urlId: number): UrlAnalytics {
+    if (environment.useMockAnalytics) {
+      return getMockAnalytics(urlId, 'all');
     }
+
+    if (requests.length === 0) {
+      return {
+        urlId,
+        totalClicks: 0,
+        uniqueClicks: 0,
+        lastClickedAt: null,
+        clicksOverTime: [],
+        topCountries: [],
+        topReferrers: [],
+        topBrowsers: [],
+        topOs: [],
+        deviceSplit: { mobile: 0, desktop: 0, tablet: 0 },
+        hourlyHeatmap: Array(24).fill(0),
+      };
+    }
+
+    const totalClicks = requests.length;
+    const uniqueClicks = new Set(requests.map(r => r.ip)).size;
+    const lastClickedAt = requests.map(r => r.date).sort().slice(-1)[0] ?? null;
+
+    const clicksOverTimeMap = new Map<string, number>();
+    requests.forEach(r => {
+      const dateKey = r.date.slice(0, 10);
+      clicksOverTimeMap.set(dateKey, (clicksOverTimeMap.get(dateKey) ?? 0) + 1);
+    });
+    const clicksOverTime = Array.from(clicksOverTimeMap.entries())
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([date, clicks]) => ({ date, clicks }));
+
+    const browserMap = new Map<string, number>();
+    requests.forEach(r => {
+      const browser = r.browser ?? 'Unknown';
+      browserMap.set(browser, (browserMap.get(browser) ?? 0) + 1);
+    });
+    const topBrowsers = Array.from(browserMap.entries())
+      .sort((a, b) => b[1] - a[1])
+      .map(([name, clicks]) => ({ name, clicks, percentage: (clicks / totalClicks) * 100 }));
+
+    const osMap = new Map<string, number>();
+    requests.forEach(r => {
+      const os = r.os ?? 'Unknown';
+      osMap.set(os, (osMap.get(os) ?? 0) + 1);
+    });
+    const topOs = Array.from(osMap.entries())
+      .sort((a, b) => b[1] - a[1])
+      .map(([name, clicks]) => ({ name, clicks, percentage: (clicks / totalClicks) * 100 }));
+
+    const deviceSplit = { mobile: 0, desktop: 0, tablet: 0 };
+    requests.forEach(r => {
+      const device = this.inferDeviceFrom(r.architecture, r.os);
+      switch (device.toLowerCase()) {
+        case 'mobile': deviceSplit.mobile++; break;
+        case 'tablet': deviceSplit.tablet++; break;
+        default: deviceSplit.desktop++; break;
+      }
+    });
+
+    const hourlyHeatmap = Array(24).fill(0);
+    requests.forEach(r => {
+      const hour = new Date(r.date).getHours();
+      hourlyHeatmap[hour]++;
+    });
+
+    return {
+      urlId,
+      totalClicks,
+      uniqueClicks,
+      lastClickedAt,
+      clicksOverTime,
+      topCountries: [],
+      topReferrers: [],
+      topBrowsers,
+      topOs,
+      deviceSplit,
+      hourlyHeatmap,
+    };
+  }
+
+  private inferDeviceFrom(architecture?: string, os?: string): string {
+    const o = (os ?? '').toLowerCase();
+    if (o.includes('android') || o.includes('ios')) return 'Mobile';
+    return 'Desktop';
   }
 }

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonContent, IonHeader, IonToolbar, IonButton, IonButtons, IonIcon, IonTitle, IonSpinner, IonChip, IonSearchbar } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonToolbar, IonButton, IonButtons, IonIcon, IonTitle, IonChip, IonSearchbar } from '@ionic/angular/standalone';
 import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 import { UrlManager } from 'src/app/services/url-manager/url-manager';
 import { SummaryCardsComponent } from './components/summary-cards/summary-cards.component';
@@ -35,7 +35,6 @@ type NamedStat = { name: string; clicks: number; percentage: number };
     IonButtons,
     IonIcon,
     IonTitle,
-    IonSpinner,
     IonChip,
     IonSearchbar,
     TranslatePipe,
@@ -97,7 +96,6 @@ export class AnalyticsPage implements OnInit {
     this.clickHistory = [];
     this.visibleClickHistory = [];
     this.visibleAnalytics = null;
-    // show skeleton placeholders for a minimum of 2 seconds
     this.showSkeleton = true;
     if (this.skeletonTimer) {
       clearTimeout(this.skeletonTimer);
@@ -106,26 +104,26 @@ export class AnalyticsPage implements OnInit {
       this.showSkeleton = false;
       this.skeletonTimer = null;
     }, 2000);
-    this.analyticsService.getAnalytics(this.urlId, 'all').subscribe({
-      next: (data) => {
-        this.analytics = data;
-        this.clickHistory = this.buildClickHistory(data);
+
+    const url = this.urlManager.urls().find(u => u.id === this.urlId);
+    if (url) {
+      this.linkName = url.name || url.shortUrl;
+      this.linkShortUrl = url.shortUrl;
+    }
+
+    this.analyticsService.getRequests(this.urlId).subscribe({
+      next: (reqs) => {
+        this.clickHistory = this.analyticsService.mapRequestsToClickHistory(reqs);
+        this.analytics = this.analyticsService.buildAnalyticsFromRequests(reqs, this.urlId!);
         this.countryOptions = this.buildCountryOptions(this.clickHistory);
         this.applyFilters();
-        const url = this.urlManager.urls().find(u => u.id === this.urlId);
-        if (url) {
-          this.linkName = url.name || url.shortUrl;
-          this.linkShortUrl = url.shortUrl;
-        }
-        // if data arrives after 2s, visible content will already be shown; if it arrives earlier
-        // the skeleton will still be visible until the timer completes
       },
-      error: () => {
+      error: (err) => {
+        console.error('Failed to load requests', err);
         this.analytics = null;
         this.visibleAnalytics = null;
         this.clickHistory = [];
         this.visibleClickHistory = [];
-        // hide skeleton if there was an error and the timer is still pending
         if (this.skeletonTimer) {
           clearTimeout(this.skeletonTimer);
           this.skeletonTimer = null;
@@ -252,71 +250,6 @@ export class AnalyticsPage implements OnInit {
     }
 
     return Number.NaN;
-  }
-
-  private buildClickHistory(analytics: UrlAnalytics): ClickHistoryEntry[] {
-    const totalEntries = Math.min(Math.max(analytics.totalClicks, 0), 40);
-
-    if (totalEntries === 0) {
-      return [];
-    }
-
-    const random = this.createSeededRandom(
-      analytics.urlId * 97 +
-      analytics.totalClicks * 31 +
-      analytics.uniqueClicks * 17
-    );
-
-    const days = analytics.clicksOverTime.length > 0
-      ? analytics.clicksOverTime
-      : [{ date: new Date().toISOString(), clicks: 1 }];
-
-    const countries = analytics.topCountries.length > 0
-      ? analytics.topCountries
-      : [{ country: 'Unknown', countryCode: '--', clicks: 1, percentage: 100 }];
-
-    const referrers = analytics.topReferrers.length > 0
-      ? analytics.topReferrers
-      : [{ referrer: '', clicks: 1, percentage: 100 }];
-
-    const browsers = analytics.topBrowsers.length > 0
-      ? analytics.topBrowsers
-      : [{ name: 'Browser', clicks: 1, percentage: 100 }];
-
-    const osList = analytics.topOs.length > 0
-      ? analytics.topOs
-      : [{ name: 'OS', clicks: 1, percentage: 100 }];
-
-    const devices = this.expandDevices(analytics.deviceSplit);
-    const hostId = this.normalizeHostId(analytics.urlId);
-
-    return Array.from({ length: totalEntries }, (_, index) => {
-      const date = new Date(days[Math.floor(random() * days.length)].date);
-      const minuteOffset = Math.floor(random() * 60);
-      const hourOffset = Math.floor(random() * 24);
-      date.setHours(hourOffset, minuteOffset, Math.floor(random() * 60), 0);
-      date.setMinutes(date.getMinutes() - index * 4);
-
-      const country = countries[Math.floor(random() * countries.length)];
-      const referrer = referrers[Math.floor(random() * referrers.length)];
-      const browser = browsers[Math.floor(random() * browsers.length)];
-      const os = osList[Math.floor(random() * osList.length)];
-      const device = devices[Math.floor(random() * devices.length)];
-
-      return {
-        id: `${hostId}-${index + 1}`,
-        clickedAt: date.toISOString(),
-        ip: this.buildMockIp(analytics.urlId, index, random),
-        country: country.country,
-        countryCode: country.countryCode,
-        referrer: referrer.referrer,
-        referrerLabel: this.formatReferrer(referrer.referrer),
-        device,
-        browser: browser.name,
-        os: os.name,
-        path: this.buildMockPath(analytics.urlId, index, random),
-      };
-    }).sort((a, b) => new Date(b.clickedAt).getTime() - new Date(a.clickedAt).getTime());
   }
 
   private buildAnalyticsView(base: UrlAnalytics, entries: ClickHistoryEntry[]): UrlAnalytics {
@@ -469,54 +402,4 @@ export class AnalyticsPage implements OnInit {
     return Array.from(grouped.values()).sort((a, b) => b.clicks - a.clicks);
   }
 
-  private createSeededRandom(seed: number): () => number {
-    let current = Math.abs(seed) % 2147483647;
-    if (current === 0) {
-      current = 1;
-    }
-
-    return () => {
-      current = (current * 16807) % 2147483647;
-      return (current - 1) / 2147483646;
-    };
-  }
-
-  private expandDevices(deviceSplit: UrlAnalytics['deviceSplit']): string[] {
-    const devices = [
-      ...Array(Math.max(1, Math.round(deviceSplit.desktop / 10))).fill('Desktop'),
-      ...Array(Math.max(1, Math.round(deviceSplit.mobile / 10))).fill('Mobile'),
-      ...Array(Math.max(1, Math.round(deviceSplit.tablet / 10))).fill('Tablet'),
-    ];
-
-    return devices.length > 0 ? devices : ['Desktop'];
-  }
-
-  private buildMockIp(urlId: number, index: number, random: () => number): string {
-    const first = 172 + (urlId % 10);
-    const second = Math.floor(random() * 254);
-    const third = Math.floor(random() * 254);
-    const fourth = 10 + index;
-    return `${first}.${second}.${third}.${fourth}`;
-  }
-
-  private buildMockPath(urlId: number, index: number, random: () => number): string {
-    const token = Math.floor(random() * 9000 + 1000);
-    return `/r/${urlId}-${index + 1}-${token}`;
-  }
-
-  private formatReferrer(referrer: string): string {
-    if (!referrer) {
-      return 'Direct';
-    }
-
-    try {
-      return new URL(referrer).hostname.replace(/^www\./, '');
-    } catch {
-      return referrer.replace(/^https?:\/\//, '');
-    }
-  }
-
-  private normalizeHostId(urlId: number): string {
-    return `CLK-${String(urlId).padStart(3, '0')}`;
-  }
 }
