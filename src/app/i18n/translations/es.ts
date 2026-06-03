@@ -146,7 +146,6 @@ export const es = {
     clickHistoryEmptyTitle: 'Aún no hay eventos',
     clickHistoryEmptyText: 'Cuando lleguen clicks, aparecerán aquí como una línea de tiempo detallada.',
     filtersTitle: 'Filtros globales',
-    filtersHeadline: 'Busca y recorta toda la pantalla de analíticas',
     searchAnalytics: 'Buscar en analíticas',
     timeRange: 'Rango de fechas',
     timeRangeHelp: 'Elige libremente desde qué día hasta qué día quieres revisar los clics.',
