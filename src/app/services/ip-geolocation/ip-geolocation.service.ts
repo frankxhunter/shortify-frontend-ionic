@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, of, forkJoin, delay, switchMap } from 'rxjs';
+import { Observable, of, forkJoin, delay, switchMap, catchError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export interface GeolocationResult {
@@ -48,6 +48,7 @@ export class IpGeolocationService {
 
     return this.resolveBatched(uncachedIps).pipe(
       switchMap(() => of(this.buildResultMap(uniqueIps))),
+      catchError(() => of(this.buildResultMap(uniqueIps))),
     );
   }
 
@@ -96,10 +97,10 @@ export class IpGeolocationService {
             ? requests[0].pipe(map(() => undefined))
             : forkJoin(requests).pipe(map(() => undefined));
 
-          if (batchIndex < batches.length - 1) {
-            return batch$.pipe(delay(this.BATCH_DELAY_MS));
-          }
-          return batch$;
+          return batch$.pipe(
+            catchError(() => of(undefined)),
+            batchIndex < batches.length - 1 ? delay(this.BATCH_DELAY_MS) : map(v => v),
+          );
         }),
       );
     }
@@ -122,6 +123,10 @@ export class IpGeolocationService {
             countryCode: response.country_code,
           });
         }
+      }),
+      catchError((error: HttpErrorResponse) => {
+        this.cache.set(ip, UNKNOWN_RESULT);
+        return of(undefined);
       }),
     );
   }

@@ -15,6 +15,9 @@ export class CountriesListComponent {
   @Input({ required: true }) countries: CountryStat[] = [];
 
   getFlagEmoji(countryCode: string): string {
+    if (!countryCode || countryCode === '--') {
+      return '❓';
+    }
     const codePoints = countryCode
       .toUpperCase()
       .split('')
