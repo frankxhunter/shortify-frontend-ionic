@@ -23,7 +23,7 @@ export class ClickHistoryPanelComponent {
 
   getFlagEmoji(countryCode: string): string {
     if (!countryCode || countryCode === '--') {
-      return '';
+      return '❓';
     }
     const codePoints = countryCode
       .toUpperCase()
