@@ -20,4 +20,15 @@ export class ClickHistoryPanelComponent {
   trackById(_: number, entry: ClickHistoryEntry): string {
     return entry.id;
   }
+
+  getFlagEmoji(countryCode: string): string {
+    if (!countryCode || countryCode === '--') {
+      return '';
+    }
+    const codePoints = countryCode
+      .toUpperCase()
+      .split('')
+      .map(char => 127397 + char.charCodeAt(0));
+    return String.fromCodePoint(...codePoints);
+  }
 }

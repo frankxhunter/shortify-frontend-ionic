@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, switchMap, map } from 'rxjs';
 import { UrlAccessRequest, UrlAnalytics } from 'src/app/Dtos/interfaces';
 import { environment } from 'src/environments/environment';
 import { getMockAnalytics } from './analytics-mock-data';
+import { IpGeolocationService } from '../ip-geolocation/ip-geolocation.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ import { getMockAnalytics } from './analytics-mock-data';
 export class AnalyticsService {
   private readonly baseUrl = environment.apiUrl;
   private http = inject(HttpClient);
+  private geoService = inject(IpGeolocationService);
 
   getRequests(urlId: number): Observable<UrlAccessRequest[]> {
     if (environment.useMockAnalytics) {
@@ -19,23 +21,53 @@ export class AnalyticsService {
     return this.http.get<UrlAccessRequest[]>(`${this.baseUrl}/api/urls/${urlId}/requests`);
   }
 
-  mapRequestsToClickHistory(reqs: UrlAccessRequest[]) {
-    return reqs.map(r => ({
-      id: String(r.id),
-      clickedAt: r.date,
-      ip: r.ip ?? '',
-      country: 'Unknown',
-      countryCode: '--',
-      referrer: '',
-      referrerLabel: 'Direct',
-      device: this.inferDeviceFrom(r.architecture, r.os),
-      browser: r.browser ?? 'Unknown',
-      os: r.os ?? 'Unknown',
-      path: '',
-    }));
+  mapRequestsToClickHistory(reqs: UrlAccessRequest[]): Observable<{
+    clickHistory: Array<{
+      id: string;
+      clickedAt: string;
+      ip: string;
+      country: string;
+      countryCode: string;
+      referrer: string;
+      referrerLabel: string;
+      device: string;
+      browser: string;
+      os: string;
+      path: string;
+    }>;
+    countryMap: Map<string, { country: string; countryCode: string }>;
+  }> {
+    const ips = reqs.map(r => r.ip ?? '');
+
+    return this.geoService.resolveCountries(ips).pipe(
+      map(countryMap => ({
+        clickHistory: reqs.map(r => {
+          const ip = r.ip ?? '';
+          const geo = countryMap.get(ip);
+          return {
+            id: String(r.id),
+            clickedAt: r.date,
+            ip,
+            country: geo?.country ?? 'Unknown',
+            countryCode: geo?.countryCode ?? '--',
+            referrer: '',
+            referrerLabel: 'Direct',
+            device: this.inferDeviceFrom(r.architecture, r.os),
+            browser: r.browser ?? 'Unknown',
+            os: r.os ?? 'Unknown',
+            path: '',
+          };
+        }),
+        countryMap,
+      })),
+    );
   }
 
-  buildAnalyticsFromRequests(requests: UrlAccessRequest[], urlId: number): UrlAnalytics {
+  buildAnalyticsFromRequests(
+    requests: UrlAccessRequest[],
+    urlId: number,
+    countryMap?: Map<string, { country: string; countryCode: string }>,
+  ): UrlAnalytics {
     if (environment.useMockAnalytics) {
       return getMockAnalytics(urlId, 'all');
     }
@@ -103,13 +135,36 @@ export class AnalyticsService {
       hourlyHeatmap[hour]++;
     });
 
+    const countryCountMap = new Map<string, { country: string; countryCode: string; count: number }>();
+    requests.forEach(r => {
+      const ip = r.ip ?? '';
+      const geo = countryMap?.get(ip);
+      const country = geo?.country ?? 'Unknown';
+      const countryCode = geo?.countryCode ?? '--';
+      const key = `${countryCode}|${country}`;
+      const current = countryCountMap.get(key);
+      if (current) {
+        current.count++;
+      } else {
+        countryCountMap.set(key, { country, countryCode, count: 1 });
+      }
+    });
+    const topCountries = Array.from(countryCountMap.values())
+      .sort((a, b) => b.count - a.count)
+      .map(({ country, countryCode, count }) => ({
+        country,
+        countryCode,
+        clicks: count,
+        percentage: (count / totalClicks) * 100,
+      }));
+
     return {
       urlId,
       totalClicks,
       uniqueClicks,
       lastClickedAt,
       clicksOverTime,
-      topCountries: [],
+      topCountries,
       topReferrers: [],
       topBrowsers,
       topOs,

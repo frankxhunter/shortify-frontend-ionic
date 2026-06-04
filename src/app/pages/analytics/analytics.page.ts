@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent, IonHeader, IonToolbar, IonButton, IonButtons, IonIcon, IonTitle, IonChip, IonSearchbar } from '@ionic/angular/standalone';
+import { switchMap, map } from 'rxjs/operators';
 import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
 import { UrlManager } from 'src/app/services/url-manager/url-manager';
 import { SummaryCardsComponent } from './components/summary-cards/summary-cards.component';
@@ -111,10 +112,18 @@ export class AnalyticsPage implements OnInit {
       this.linkShortUrl = url.shortUrl;
     }
 
-    this.analyticsService.getRequests(this.urlId).subscribe({
-      next: (reqs) => {
-        this.clickHistory = this.analyticsService.mapRequestsToClickHistory(reqs);
-        this.analytics = this.analyticsService.buildAnalyticsFromRequests(reqs, this.urlId!);
+    this.analyticsService.getRequests(this.urlId).pipe(
+      switchMap(reqs => this.analyticsService.mapRequestsToClickHistory(reqs).pipe(
+        map(({ clickHistory, countryMap }) => ({
+          reqs,
+          clickHistory,
+          countryMap,
+        })),
+      )),
+    ).subscribe({
+      next: ({ reqs, clickHistory, countryMap }) => {
+        this.clickHistory = clickHistory;
+        this.analytics = this.analyticsService.buildAnalyticsFromRequests(reqs, this.urlId!, countryMap);
         this.countryOptions = this.buildCountryOptions(this.clickHistory);
         this.applyFilters();
       },
@@ -182,7 +191,7 @@ export class AnalyticsPage implements OnInit {
     }
 
     const filteredEntries = this.filterHistoryEntries(this.clickHistory);
-    this.visibleClickHistory = filteredEntries;
+    this.visibleClickHistory = filteredEntries.sort((a, b)=> b.clickedAt.localeCompare(a.clickedAt));
     this.visibleAnalytics = this.hasActiveFilters
       ? this.buildAnalyticsView(this.analytics, filteredEntries)
       : this.analytics;
