@@ -114,16 +114,12 @@ export class AnalyticsPage implements OnInit {
 
     this.analyticsService.getRequests(this.urlId).pipe(
       switchMap(reqs => this.analyticsService.mapRequestsToClickHistory(reqs).pipe(
-        map(({ clickHistory, countryMap }) => ({
-          reqs,
-          clickHistory,
-          countryMap,
-        })),
+        map(clickHistory => ({ reqs, clickHistory })),
       )),
     ).subscribe({
-      next: ({ reqs, clickHistory, countryMap }) => {
+      next: ({ reqs, clickHistory }) => {
         this.clickHistory = clickHistory;
-        this.analytics = this.analyticsService.buildAnalyticsFromRequests(reqs, this.urlId!, countryMap);
+        this.analytics = this.analyticsService.buildAnalyticsFromRequests(reqs, this.urlId!);
         this.countryOptions = this.buildCountryOptions(this.clickHistory);
         this.applyFilters();
       },

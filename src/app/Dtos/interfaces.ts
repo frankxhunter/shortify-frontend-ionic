@@ -26,6 +26,8 @@ export interface UrlAccessRequest {
   os: string;
   architecture: string;
   date: string;
+  country: string;
+  countryCode: string;
 }
 
 export interface User {
