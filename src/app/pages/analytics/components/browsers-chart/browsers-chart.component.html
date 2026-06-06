@@ -1,0 +1,18 @@
+<ion-card class="chart-card">
+  <ion-card-title class="chart-title">{{ 'analytics.topBrowsers' | translate }}</ion-card-title>
+  @if (browsers.length === 0) {
+    <div class="no-data">{{ 'analytics.noData' | translate }}</div>
+  } @else {
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [colors]="chartOptions.colors"
+      [plotOptions]="chartOptions.plotOptions"
+      [xaxis]="chartOptions.xaxis"
+      [yaxis]="chartOptions.yaxis"
+      [grid]="chartOptions.grid"
+      [dataLabels]="chartOptions.dataLabels"
+      [tooltip]="chartOptions.tooltip"
+    ></apx-chart>
+  }
+</ion-card>

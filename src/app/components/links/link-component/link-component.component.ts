@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, OnDestroy, OnInit, signal } from '
 import { IonCard, IonCardContent, IonIcon, IonButton } from "@ionic/angular/standalone";
 import { FormsModule } from '@angular/forms';
 import { AlertController } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
 import { CopyButtonComponent } from "../../buttons/copy-button/copy-button/copy-button.component";
 import { UrlManager } from 'src/app/services/url-manager/url-manager';
 import { QrCodeButtonComponent } from "../../buttons/qr-code-button/qr-code-button.component";
@@ -18,6 +19,7 @@ import { I18nService } from 'src/app/services/i18n/i18n.service';
 export class LinkComponentComponent {
 
   urlService = inject(UrlManager)
+  private router = inject(Router);
   alertController = inject(AlertController);
   i18nService = inject(I18nService);
   searchElement = signal('');
@@ -88,6 +90,10 @@ export class LinkComponentComponent {
     await alert.present();
   }
 
+
+  openAnalytics(id: number) {
+    this.router.navigate(['/analytics', id]);
+  }
 
   async developerAdvertance() {
   const alert = await this.alertController.create({

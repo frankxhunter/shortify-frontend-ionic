@@ -1,0 +1,80 @@
+<section class="history-panel">
+  <div class="history-shell">
+    <div class="history-header">
+      <div class="history-copy">
+        <div class="eyebrow">{{ 'analytics.clickHistoryTitle' | translate }}</div>
+        <h2>{{ 'analytics.clickHistoryTitle' | translate }}</h2>
+        <p>{{ 'analytics.clickHistorySubtitle' | translate }}</p>
+      </div>
+
+      <div class="history-meta">
+        @if (mockMode) {
+          <ion-chip class="mock-chip" [outline]="true">MOCK</ion-chip>
+        }
+        <ion-chip class="count-chip" [outline]="true">
+          {{ 'analytics.clickHistoryCount' | translate:{ count: entries.length } }}
+        </ion-chip>
+      </div>
+    </div>
+
+    @if (entries.length === 0) {
+      <div class="empty-state">
+        <div class="empty-copy">
+          @if (hasActiveFilters) {
+            <div class="empty-title">{{ 'analytics.clickHistoryNoResultsTitle' | translate }}</div>
+            <div class="empty-text">{{ 'analytics.clickHistoryNoResultsText' | translate }}</div>
+          } @else {
+            <div class="empty-title">{{ 'analytics.clickHistoryEmptyTitle' | translate }}</div>
+            <div class="empty-text">{{ 'analytics.clickHistoryEmptyText' | translate }}</div>
+          }
+        </div>
+      </div>
+    } @else {
+      <div class="history-list">
+        @for (entry of entries; track trackById($index, entry)) {
+          <article class="history-item">
+            <div class="timeline">
+              <div class="timeline-dot"></div>
+              <div class="timeline-line"></div>
+            </div>
+
+            <div class="history-card">
+              <div class="history-top">
+                <div class="history-time">{{ entry.clickedAt | relativeTime }}</div>
+                <div class="history-ip">{{ entry.ip }}</div>
+              </div>
+
+              <div class="history-body">
+                <div class="history-location">
+                  <span class="flag">{{ getFlagEmoji(entry.countryCode) }}</span>
+                  <span class="country">{{ entry.country }}</span>
+                  <span class="referrer">{{ entry.referrerLabel }}</span>
+                </div>
+
+                <div class="history-path">
+                  <ion-icon name="link-outline"></ion-icon>
+                  <code>{{ entry.path }}</code>
+                </div>
+              </div>
+
+              <div class="history-chips">
+                <ion-chip class="meta-chip" [outline]="true">
+                  <ion-icon name="phone-portrait-outline"></ion-icon>
+                  <span>{{ entry.device }}</span>
+                </ion-chip>
+                <ion-chip class="meta-chip" [outline]="true">
+                  <ion-icon name="globe-outline"></ion-icon>
+                  <span>{{ entry.browser }}</span>
+                </ion-chip>
+                <ion-chip class="meta-chip" [outline]="true">
+                  <ion-icon name="layers-outline"></ion-icon>
+                  <span>{{ entry.os }}</span>
+                </ion-chip>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </div>
+</section>

@@ -29,7 +29,6 @@ export class WebSocketService {
 
     this.connectionState.subscribe(connected => {
       if (connected) {
-        console.log('Conectado: ' + idUrl)
         this.client.subscribe(topic, (message: IMessage) => {
           subject.next(Number(message.body));
         })

@@ -1,0 +1,14 @@
+<ion-card class="chart-card">
+  <ion-card-title class="chart-title">{{ 'analytics.devices' | translate }}</ion-card-title>
+  <apx-chart
+    [series]="chartOptions.series"
+    [labels]="chartOptions.labels"
+    [chart]="chartOptions.chart"
+    [colors]="chartOptions.colors"
+    [legend]="chartOptions.legend"
+    [dataLabels]="chartOptions.dataLabels"
+    [stroke]="chartOptions.stroke"
+    [plotOptions]="chartOptions.plotOptions"
+    [tooltip]="chartOptions.tooltip"
+  ></apx-chart>
+</ion-card>

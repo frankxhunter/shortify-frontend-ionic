@@ -148,6 +148,14 @@ export class LogInComponent implements OnInit {
     this.messages = messagesForLogin[this.typeOfLogin]
   }
 
+  get passwordAutocomplete() {
+    return this.typeOfLogin === LOGIN_TYPE.LOGIN ? 'current-password' : 'new-password';
+  }
+
+  get emailAutocomplete() {
+    return this.typeOfLogin === LOGIN_TYPE.LOGIN ? 'username' : 'email';
+  }
+
   redirectToHome() {
     this.router.navigate([''])
   }

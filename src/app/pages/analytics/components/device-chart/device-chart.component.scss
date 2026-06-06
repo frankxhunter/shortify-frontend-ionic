@@ -1,0 +1,31 @@
+.chart-card {
+  margin: 0;
+  padding: var(--spacing-md);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow-small);
+  background: var(--background-card);
+  overflow: hidden;
+}
+
+.chart-title {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+apx-chart {
+  display: block;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .chart-card {
+    padding: var(--spacing-sm);
+  }
+
+  .chart-title {
+    font-size: var(--font-size-sm);
+  }
+}

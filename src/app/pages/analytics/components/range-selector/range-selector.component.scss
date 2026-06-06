@@ -1,0 +1,29 @@
+.range-segment {
+  --background: transparent;
+  --indicator-color: var(--color-primary);
+  --color: var(--text-muted);
+  --color-checked: var(--color-primary);
+  width: 100%;
+  min-width: 0;
+
+  ion-segment-button {
+    --color: var(--text-muted);
+    --color-checked: var(--color-primary);
+    --indicator-color: var(--color-primary);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    min-width: 46px;
+    padding-inline: 6px;
+  }
+}
+
+@media (max-width: 600px) {
+  .range-segment {
+    ion-segment-button {
+      min-width: 42px;
+      padding-inline: 4px;
+      letter-spacing: 0.02em;
+    }
+  }
+}

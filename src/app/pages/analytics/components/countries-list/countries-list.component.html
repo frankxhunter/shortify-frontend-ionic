@@ -1,0 +1,23 @@
+<ion-card class="list-card">
+  <ion-card-title class="chart-title">{{ 'analytics.topCountries' | translate }}</ion-card-title>
+  @if (countries.length === 0) {
+    <div class="no-data">{{ 'analytics.noData' | translate }}</div>
+  } @else {
+    <div class="list-container">
+      @for (country of countries; track country.countryCode) {
+        <div class="list-item">
+          <div class="country-info">
+            <span class="flag">{{ getFlagEmoji(country.countryCode) }}</span>
+            <span class="name">{{ country.country }}</span>
+          </div>
+          <div class="stats">
+            <div class="bar-container">
+              <div class="bar" [style.width.%]="country.percentage"></div>
+            </div>
+            <span class="percentage">{{ country.percentage.toFixed(1) }}%</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</ion-card>

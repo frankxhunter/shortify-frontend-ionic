@@ -8,14 +8,18 @@
     <ion-card-content class="login-content">
       <h2>{{ messages.titleMessage | translate }}</h2>
 
-      <form class="form" [formGroup]="form" (ngSubmit)="submit()">
+      <form class="form" [formGroup]="form" (ngSubmit)="submit()" autocomplete="on">
         <div class="form-group">
           <label class="form-label">{{ 'auth.emailLabel' | translate }}</label>
           <ion-item lines="none" class="custom-input" [ngClass]="{'error-border': isInvalidControl('email') }">
-            <!-- Input nativo oculto para que el navegador lo detecte -->
-            <input type="email" autocomplete="email" [value]="form.get('email')?.value"
-              style="position:absolute; opacity:0; width:1px; height:1px; top:-9999px" />
-            <ion-input autocomplete="email" (ionBlur)="updateErrorMessage()" formControlName="email"
+            <ion-input
+              type="email"
+              name="email"
+              [autocomplete]="emailAutocomplete"
+              autocapitalize="none"
+              spellcheck="false"
+              (ionBlur)="updateErrorMessage()"
+              formControlName="email"
               [placeholder]="'auth.emailPlaceholder' | translate"></ion-input>
           </ion-item>
         </div>
@@ -23,10 +27,15 @@
         <div class="form-group">
           <label class="form-label">{{ 'auth.passwordLabel' | translate }}</label>
           <ion-item lines="none" class="custom-input" [ngClass]="{'error-border': isInvalidControl('password') }">
-            <input type="password" autocomplete="current-password" [value]="form.get('password')?.value"
-              style="position:absolute; opacity:0; width:1px; height:1px; top:-9999px" />
-            <ion-input autocomplete="current-password" (ionBlur)="updateErrorMessage()" formControlName="password"
-              [type]="showPassword ? 'text' : 'password'" type="password" [placeholder]="'auth.passwordPlaceholder' | translate"></ion-input>
+            <ion-input
+              [type]="showPassword ? 'text' : 'password'"
+              name="password"
+              [autocomplete]="passwordAutocomplete"
+              autocapitalize="none"
+              spellcheck="false"
+              (ionBlur)="updateErrorMessage()"
+              formControlName="password"
+              [placeholder]="'auth.passwordPlaceholder' | translate"></ion-input>
             <ion-icon slot="end" [name]="!showPassword ? 'eye-off-outline' : 'eye-outline'"
               (click)="showPassword = !showPassword" class="eye-icon">
             </ion-icon>
