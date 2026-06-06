@@ -79,9 +79,7 @@ export class AnalyticsPage implements OnInit {
     countryFilter: 'all',
   };
 
-  // local flag to show skeleton placeholders for at least 2 seconds
   showSkeleton = false;
-  private skeletonTimer: any = null;
 
   ngOnInit() {
     const idParam = this.route.snapshot.paramMap.get('urlId');
@@ -98,13 +96,6 @@ export class AnalyticsPage implements OnInit {
     this.visibleClickHistory = [];
     this.visibleAnalytics = null;
     this.showSkeleton = true;
-    if (this.skeletonTimer) {
-      clearTimeout(this.skeletonTimer);
-    }
-    this.skeletonTimer = setTimeout(() => {
-      this.showSkeleton = false;
-      this.skeletonTimer = null;
-    }, 2000);
 
     const url = this.urlManager.urls().find(u => u.id === this.urlId);
     if (url) {
@@ -122,6 +113,7 @@ export class AnalyticsPage implements OnInit {
         this.analytics = this.analyticsService.buildAnalyticsFromRequests(reqs, this.urlId!);
         this.countryOptions = this.buildCountryOptions(this.clickHistory);
         this.applyFilters();
+        this.showSkeleton = false;
       },
       error: (err) => {
         console.error('Failed to load requests', err);
@@ -129,10 +121,6 @@ export class AnalyticsPage implements OnInit {
         this.visibleAnalytics = null;
         this.clickHistory = [];
         this.visibleClickHistory = [];
-        if (this.skeletonTimer) {
-          clearTimeout(this.skeletonTimer);
-          this.skeletonTimer = null;
-        }
         this.showSkeleton = false;
       },
     });
