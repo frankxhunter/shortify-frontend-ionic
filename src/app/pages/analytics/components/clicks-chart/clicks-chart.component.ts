@@ -34,7 +34,6 @@ export class ClicksChartComponent implements OnInit, OnChanges, AfterViewChecked
   ngAfterViewChecked() {
     if (this.shouldScroll && this.scrollWrapper?.nativeElement) {
       this.scrollWrapper.nativeElement.scrollLeft = this.scrollWrapper.nativeElement.scrollWidth;
-      console.log("hola");
       this.shouldScroll = false;
     }
   }
